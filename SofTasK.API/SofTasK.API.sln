@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32505.426
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SofTasK.API", "SofTasK.API\SofTasK.API.csproj", "{2F002251-08DF-4C4D-9F00-68E0D06A583C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2F002251-08DF-4C4D-9F00-68E0D06A583C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F002251-08DF-4C4D-9F00-68E0D06A583C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F002251-08DF-4C4D-9F00-68E0D06A583C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F002251-08DF-4C4D-9F00-68E0D06A583C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EC1D472F-E5CC-4E64-94A9-12136E13EFA3}
+	EndGlobalSection
+EndGlobal
