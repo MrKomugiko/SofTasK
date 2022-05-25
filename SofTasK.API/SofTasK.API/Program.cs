@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SofTasK.API.Data;
+using SofTasK.API.Interfaces;
 using SofTasK.API.Models;
+using SofTasK.API.Repositories;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -90,6 +92,8 @@ builder.Services.AddSwaggerGen(swagger =>
         Title = "SofTasK API",
     });
 });
+
+builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
 
 var app = builder.Build();
 
