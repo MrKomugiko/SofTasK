@@ -24,7 +24,6 @@ namespace SofTasK.API.Controllers
         }
 
         // GET: api/Projects
-        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProjectDto>>> GetProjectsAsync()
         {
