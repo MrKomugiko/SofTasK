@@ -40,21 +40,5 @@ export class LoginComponent implements OnInit {
         console.log(msg);
         alert("Wrong Username or password.");
       });
-
-  //   this.softaskAPI.login(payload).subscribe({
-  //     next(respond) {
-  //       if (respond.token != null) {
-  //         localStorage.setItem('userInfo', JSON.stringify(respond));
-  //         console.log("LOGGED IN");
-  //       }
-  //     },
-  //     error(msg) {
-  //       console.log(msg);
-  //       alert("Wrong Username or password.");
-  //     }
-  //   });
-  // }
-
-
   }
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ILoginResponse } from './services/softaskapi.service';
+import { ILoginResponse, SoftaskAPI } from './services/softaskapi.service';
 
 @Component({
   selector: 'app-root',
@@ -9,15 +9,31 @@ import { ILoginResponse } from './services/softaskapi.service';
 export class AppComponent {
   title = 'SofTasK.Website';
 
-  get isUserLogin():boolean{
+  constructor(private softaskAPI:SoftaskAPI){  }
+
+  get isUserLogin(): boolean {
     const userObj = localStorage.getItem("userInfo");
-    if( userObj != null)
-    {
-      const userInfo : ILoginResponse = JSON.parse(userObj);
-      if(userInfo.token != null)
-      {
-        return true;
-      }
+    if (userObj == null)
+      return false;
+
+    const userInfo: ILoginResponse = JSON.parse(userObj);
+
+    if (userInfo.token == null)
+      return false;
+
+    if (this.isExpired(userInfo.expiration)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  private isExpired(date: Date): boolean {
+    const expirationDate: Date = new Date(Date.parse(date.toString()));
+    if (expirationDate < new Date()) {
+      // console.log("token time expired");
+      this.softaskAPI.logout();
+      return true;
     }
     return false;
   }

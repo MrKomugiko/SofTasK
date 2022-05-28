@@ -9,10 +9,10 @@
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
           <div class="row justify-content-center pb-2">
             <div class="group-control col-10 col-md-8">
-              <input type="text" formControlName="userName" placeholder="Username" class="form-control">
-              <input type="email" formControlName="email" placeholder="Email" class="form-control">
-              <input type="password" formControlName="password" placeholder="Password" class="form-control">
-              <input type="password" formControlName="passwordConfirm" placeholder="Confirm password" class="form-control">
+              <input type="text" formControlName="username" placeholder="Username" autocomplete="username" class="form-control">
+              <input type="email" formControlName="email" placeholder="Email" autocomplete="email" class="form-control">
+              <input type="password" formControlName="password" placeholder="Password" autocomplete="current-password" class="form-control">
+              <input type="password" formControlName="confirmpassword" placeholder="Confirm password" autocomplete="confirm-password" class="form-control">
             </div>
           </div>
           <button type="submit" class="btn btn-outline-primary mb-3" [disabled]="!registerForm.valid">Sign up</button>

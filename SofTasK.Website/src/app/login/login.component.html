@@ -9,8 +9,8 @@
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <div class="row justify-content-center pb-2">
             <div class="control-group col-10 col-md-8">
-              <input type="text" formControlName="username" placeholder="sername" class="form-control">
-              <input type="password" formControlName="password" placeholder="Password" class="form-control">
+              <input type="text" formControlName="username" placeholder="Username" autocomplete="username" class="form-control">
+              <input type="password" formControlName="password" placeholder="Password" autocomplete="current-password" class="form-control">
             </div>
           </div>
           <button type="submit" class="btn btn-outline-primary mb-3" [disabled]="!loginForm.valid">Login</button>

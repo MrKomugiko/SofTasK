@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,26 @@ export class SoftaskAPI {
   public login(data:ILoginRequest):Observable<ILoginResponse> {
     return this.http.post<ILoginResponse>(this.baseUrl+'Authenticate/login',data);
   }
+
+  public logout() : void
+  {
+    localStorage.removeItem("userInfo");
+    console.log("user logged off");
+  }
+
+  public register(data:IRegisterRequest) {
+    return this.http.post(this.baseUrl+'Authenticate/register',data);
+  }
 }
+
+
+export interface IRegisterRequest {
+  email:string,
+  username:string,
+  password:string,
+  confirmpassword:string
+}
+
 export interface ILoginResponse {
   token:string,
   expiration : Date

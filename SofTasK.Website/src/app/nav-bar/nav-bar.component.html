@@ -7,22 +7,21 @@
     <div class="collapse navbar-collapse" id="navbarColor01">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link active" aria-current="page" [routerLink]="['/']" routerLinkActive="router-link-active" >Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Features</a>
+          <a class="nav-link" [routerLink]="['/projects']">Projects</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Pricing</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
         </li>
       </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-light" type="submit">Search</button>
+      <form class="d-flex w-100 mx-5" style="margin-right:auto;">
+        <input class="form-control form-control-sm me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-sm btn-outline-light" type="submit">Search</button>
       </form>
+      <a class="nav-link p-0" (click)="logout()" routerLinkActive="router-link-active" >
+          <img class="img" style="width:36px; cursor:pointer;" src="https://cdn-icons.flaticon.com/png/512/4159/premium/4159749.png?token=exp=1653737173~hmac=d6018f28ed2b7b48c145f26b49ca0f17">
+      </a>
     </div>
   </div>
 </nav>
