@@ -11,16 +11,11 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-string connection_string = "";
-
-#if DEBUG
-    // debug read connection string from separate hidden config file
-    connection_string = builder.Configuration.GetConnectionString("softask-postgres-connection");
-#else
-    // release, get connection string from sonfig keys on server
+string connection_string = builder.Configuration.GetConnectionString("softask-postgres-connection");
+if(connection_string == "" || connection_string == null)
+{
     connection_string = Environment.GetEnvironmentVariable("softask-postgres-connection");
-#endif
-
+}
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connection_string));
