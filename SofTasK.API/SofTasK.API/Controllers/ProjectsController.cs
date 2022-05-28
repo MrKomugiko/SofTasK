@@ -9,6 +9,7 @@ using SofTasK.API.Models;
 
 namespace SofTasK.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProjectsController : ControllerBase
@@ -34,7 +35,6 @@ namespace SofTasK.API.Controllers
         }
 
         // GET: api/Projects/5
-        [Authorize]
         [HttpGet("{_id}")]
         public async Task<ActionResult<ProjectDto>> GetProjectAsync(int _id)
         {
@@ -47,7 +47,6 @@ namespace SofTasK.API.Controllers
         }
 
         // PUT: api/Projects/5
-        [Authorize]
         [HttpPut("{_id}")]
         public async Task<IActionResult> PutProjectAsync(int _id, ProjectEditDto _changedProject)
         {
@@ -68,7 +67,6 @@ namespace SofTasK.API.Controllers
         }
 
         // POST: api/Projects
-        [Authorize]
         [HttpPost]
         public async Task<ActionResult<ProjectDto>> PostProjectAsync(CreateProjectDto _newProject)
         {
@@ -98,7 +96,6 @@ namespace SofTasK.API.Controllers
         }
 
         // DELETE: api/Projects/5
-        [Authorize]
         [HttpDelete("{_id}")]
         public async Task<IActionResult> DeleteProjectAsync(int _id)
         {
