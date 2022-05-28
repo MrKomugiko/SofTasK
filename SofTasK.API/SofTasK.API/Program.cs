@@ -11,8 +11,19 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+string connection_string = "";
+
+#if DEBUG
+    // debug read connection string from separate hidden config file
+    connection_string = builder.Configuration.GetConnectionString("softask-postgres-connection");
+#else
+    // release, get connection string from sonfig keys on server
+    connection_string = Environment.GetEnvironmentVariable("softask-postgres-connection");
+#endif
+
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SQLConnection")));
+    options.UseNpgsql(connection_string));
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     {
@@ -44,7 +55,6 @@ builder.Services.AddAuthentication(auth =>{
 
 builder.Services.AddControllers();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("Open",builder => builder
