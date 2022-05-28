@@ -1,0 +1,14 @@
+form {
+  margin-right:auto;
+  width:100%;
+  display:flex;
+}
+
+.fa-power-off {
+  font-size: large;
+}
+
+.logout > * {
+  color:rgb(255, 109, 109);
+  cursor: pointer;
+}

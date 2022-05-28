@@ -9,7 +9,10 @@ import { Router } from '@angular/router';
 
 export class SoftaskAPI {
 
-  private baseUrl:string = 'https://localhost:7054/api/';
+  //private baseUrl:string = 'https://localhost:7054/api/';
+  private baseUrl:string = 'https://softask-api.herokuapp.com/api/';
+
+
 
   constructor(private http: HttpClient) {
   }
