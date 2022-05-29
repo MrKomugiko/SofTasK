@@ -1,7 +1,13 @@
 
-<div class="container" style="margin-top: 5rem;">
   <app-nav-bar *ngIf="isUserLogin"></app-nav-bar>
-  <router-outlet></router-outlet>
-  <!-- <app-property-list class="container row deck-group"></app-property-list> -->
+  <div class="container-fluid">
+    <div class="row">
+      <nav class="col-md-2 d-none d-md-block bg-dark sidebar">
+        <app-nav-bar-side *ngIf="isUserLogin"></app-nav-bar-side>
+      </nav>
 
-</div>
+      <main role="main" class="col-12 col-md-10 col-lg-10 pt-3 px-4" style="min-height: calc(100vh - 56px);">
+        <router-outlet></router-outlet>
+      </main>
+    </div>
+  </div>

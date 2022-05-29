@@ -14,6 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProjectComponent } from './project/project.component';
+import { NavBarSideComponent } from './nav-bar-side/nav-bar-side.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { ProjectComponent } from './project/project.component';
     LoginComponent,
     RegisterComponent,
     DashboardComponent,
-    ProjectComponent
+    ProjectComponent,
+    NavBarSideComponent
   ],
   imports: [
     BrowserModule,
