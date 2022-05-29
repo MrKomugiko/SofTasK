@@ -18,7 +18,7 @@ export class PropertyListComponent implements OnInit {
     this.softaskAPI.getAllProjects()
       .subscribe(data => {
         this.projects = data;
-        console.log(data)
+        // console.log(data)
       })
   }
 }

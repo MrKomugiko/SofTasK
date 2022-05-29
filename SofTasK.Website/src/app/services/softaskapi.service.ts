@@ -23,7 +23,7 @@ export class SoftaskAPI {
     if(obj != null)
     {
      const userInfo : ILoginResponse = JSON.parse(obj);
-     console.log(userInfo.token);
+    //  console.log(userInfo.token);
 
      const headers = new HttpHeaders({
        'Authorization':`Bearer ${ userInfo?.token }`

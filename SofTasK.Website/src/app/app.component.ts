@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
+import { inject } from '@angular/core/testing';
+import { CanActivate, Router } from '@angular/router';
 import { ILoginResponse, SoftaskAPI } from './services/softaskapi.service';
 
 @Component({
@@ -6,12 +8,62 @@ import { ILoginResponse, SoftaskAPI } from './services/softaskapi.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent {
   title = 'SofTasK.Website';
 
-  constructor(private softaskAPI:SoftaskAPI){  }
+  constructor(private router:Router, private softaskAPI:SoftaskAPI, private authservice:AuthService){
+    if(this.authservice.isUserLogin)
+    {
+      console.log('redirected to dashboard if logged in');
+      this.router.navigate(['/dashboard'])
+    }
+  }
 
+  get isUserLogin():boolean { return this.authservice.isUserLogin; }
+
+
+}
+
+@Injectable()
+export class AlwaysAuthGuard implements CanActivate {
+  canActivate() : boolean {
+    console.log("AlwaysAuthGuard");
+    return true;
+    }
+  }
+@Injectable()
+export class OnlyWhenUserNotLogged implements CanActivate {
+  constructor(private authservice:AuthService){ }
+
+  canActivate() : boolean {
+    return ! this.authservice.isUserLogin;
+    }
+  }
+
+  @Injectable()
+  export class OnlyLogged implements CanActivate {
+    constructor(private authservice:AuthService, private router:Router){ }
+
+    canActivate() : boolean {
+        const loginStatus:boolean =this.authservice.isUserLogin;
+        if( loginStatus ){
+          // is logged, can enter page
+          return true;
+        }
+        else{
+          // not loggged, redirect to login
+          this.router.navigate(['login']);
+          return false;
+        }
+      }
+    }
+
+@Injectable()
+export class AuthService {
+  constructor(private softaskAPI: SoftaskAPI) { }
   get isUserLogin(): boolean {
+
     const userObj = localStorage.getItem("userInfo");
     if (userObj == null)
       return false;
@@ -28,7 +80,7 @@ export class AppComponent {
     return true;
   }
 
-  private isExpired(date: Date): boolean {
+  isExpired(date: Date): boolean {
     const expirationDate: Date = new Date(Date.parse(date.toString()));
     if (expirationDate < new Date()) {
       // console.log("token time expired");
