@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
   onSubmit()
   {
     const payload:ILoginRequest = {
-      username: this.loginForm.controls["username"].value,
+      username: this.loginForm.controls["username"].value.trim(),
       password: this.loginForm.controls["password"].value
     }
 

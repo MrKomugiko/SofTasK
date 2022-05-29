@@ -1,5 +1,4 @@
 import { Component, Injectable } from '@angular/core';
-import { inject } from '@angular/core/testing';
 import { CanActivate, Router } from '@angular/router';
 import { ILoginResponse, SoftaskAPI } from './services/softaskapi.service';
 
@@ -12,12 +11,8 @@ import { ILoginResponse, SoftaskAPI } from './services/softaskapi.service';
 export class AppComponent {
   title = 'SofTasK.Website';
 
-  constructor(private router:Router, private softaskAPI:SoftaskAPI, private authservice:AuthService){
-    if(this.authservice.isUserLogin)
-    {
-      console.log('redirected to dashboard if logged in');
-      this.router.navigate(['/dashboard'])
-    }
+  constructor(private authservice:AuthService){
+
   }
 
   get isUserLogin():boolean { return this.authservice.isUserLogin; }
@@ -46,7 +41,7 @@ export class OnlyWhenUserNotLogged implements CanActivate {
     constructor(private authservice:AuthService, private router:Router){ }
 
     canActivate() : boolean {
-        const loginStatus:boolean =this.authservice.isUserLogin;
+        const loginStatus:boolean = this.authservice.isUserLogin;
         if( loginStatus ){
           // is logged, can enter page
           return true;

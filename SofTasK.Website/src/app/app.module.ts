@@ -9,11 +9,11 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { SoftaskAPI } from './services/softaskapi.service';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { RouterModule, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { Observable } from 'rxjs';
+import { ProjectComponent } from './project/project.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +23,8 @@ import { Observable } from 'rxjs';
     NavBarComponent,
     LoginComponent,
     RegisterComponent,
-    DashboardComponent
+    DashboardComponent,
+    ProjectComponent
   ],
   imports: [
     BrowserModule,

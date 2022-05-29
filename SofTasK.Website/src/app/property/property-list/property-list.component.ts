@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IProject, SoftaskAPI } from 'src/app/services/softaskapi.service';
 
-
-
 @Component({
   selector: 'app-property-list',
   templateUrl: './property-list.component.html',

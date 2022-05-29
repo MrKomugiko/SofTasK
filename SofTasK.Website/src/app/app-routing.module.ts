@@ -6,14 +6,17 @@ import { BrowserModule } from "@angular/platform-browser";
 import { RegisterComponent } from "./register/register.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { AlwaysAuthGuard,OnlyLogged,OnlyWhenUserNotLogged } from "./app.component";
+import { ProjectComponent } from "./project/project.component";
 
 const routes: Routes = [
-  {path:'', component:LoginComponent},
+  {path:'', component:DashboardComponent, canActivate: [OnlyLogged]},
   {path:'login',component:LoginComponent},
-  {path:'dashboard',component:DashboardComponent, canActivate: [OnlyLogged]},
   {path:'register',component:RegisterComponent},
   {path:'projects',component:PropertyListComponent, canActivate: [OnlyLogged]},
-  {path:'**', redirectTo:('/')},
+  {path:'project/:id',component:ProjectComponent, canActivate: [OnlyLogged]},
+  {path:'dashboard',component:DashboardComponent, canActivate: [OnlyLogged]},
+
+  {path:'**', redirectTo:('/')}
 
 ];
 
