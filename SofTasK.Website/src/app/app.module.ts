@@ -15,6 +15,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProjectComponent } from './project/project.component';
 import { NavBarSideComponent } from './nav-bar-side/nav-bar-side.component';
+import { TaskDetailsComponent } from './project/task-details/task-details.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,8 @@ import { NavBarSideComponent } from './nav-bar-side/nav-bar-side.component';
     RegisterComponent,
     DashboardComponent,
     ProjectComponent,
-    NavBarSideComponent
+    NavBarSideComponent,
+    TaskDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +37,8 @@ import { NavBarSideComponent } from './nav-bar-side/nav-bar-side.component';
     RouterModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule
   ],
   providers: [
     SoftaskAPI,
