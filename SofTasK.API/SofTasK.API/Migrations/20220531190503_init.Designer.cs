@@ -12,8 +12,8 @@ using SofTasK.API.Data;
 namespace SofTasK.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220528212939_postgres-init")]
-    partial class postgresinit
+    [Migration("20220531190503_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -284,7 +284,14 @@ namespace SofTasK.API.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AssignedId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("Ended")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("OwnerId")
@@ -293,6 +300,12 @@ namespace SofTasK.API.Migrations
 
                     b.Property<int>("Priority")
                         .HasColumnType("integer");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("Started")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -304,7 +317,11 @@ namespace SofTasK.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AssignedId");
+
                     b.HasIndex("OwnerId");
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("Tasks");
                 });
@@ -395,25 +412,45 @@ namespace SofTasK.API.Migrations
 
             modelBuilder.Entity("SofTasK.API.Models.TaskModel", b =>
                 {
+                    b.HasOne("SofTasK.API.Models.AppUser", "Assigned")
+                        .WithMany("AssignedToTasks")
+                        .HasForeignKey("AssignedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SofTasK.API.Models.AppUser", "Createdby")
-                        .WithMany("Tasks")
+                        .WithMany("CreatedTasks")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SofTasK.API.Models.Project", "Project")
+                        .WithMany("AllTasks")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Assigned");
+
                     b.Navigation("Createdby");
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("SofTasK.API.Models.Project", b =>
                 {
+                    b.Navigation("AllTasks");
+
                     b.Navigation("Collaborators");
                 });
 
             modelBuilder.Entity("SofTasK.API.Models.AppUser", b =>
                 {
-                    b.Navigation("Projects");
+                    b.Navigation("AssignedToTasks");
 
-                    b.Navigation("Tasks");
+                    b.Navigation("CreatedTasks");
+
+                    b.Navigation("Projects");
                 });
 #pragma warning restore 612, 618
         }

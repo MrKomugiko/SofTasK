@@ -2,6 +2,7 @@
 using SofTasK.API.Data;
 using SofTasK.API.Interfaces;
 using SofTasK.API.Models;
+using System.Linq;
 
 namespace SofTasK.API.Repositories
 {
@@ -22,6 +23,7 @@ namespace SofTasK.API.Repositories
 
             return await _context.Projects
                 .Include(x => x.Owner)
+                .Include(x => x.AllTasks)
                 .ToListAsync();
         }
 
@@ -32,9 +34,43 @@ namespace SofTasK.API.Repositories
                 return null;
             }
             Project? project = await _context.Projects
+                .Include(x => x.AllTasks)
                 .Include(x => x.Owner)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(x => x.Id == _id);
+
+            //Project? project = await _context.Projects.Select(x => new Project() {
+            //        Id = x.Id,
+            //        Name = x.Name,
+            //        Description = x.Description,
+            //        OwnerId = x.OwnerId,
+            //        Owner = x.Owner != null ? new AppUser() {
+            //                Id = x.Owner.Id,
+            //                UserName = x.Owner.UserName,
+            //                Email = x.Owner.Email
+            //            } : null,
+            //        AllTasks = x.AllTasks.Select(x => new TaskModel() {
+            //                Id = x.Id,
+            //                ProjectId = x.ProjectId,
+            //                Title = x.Title,
+            //                Priority = x.Priority,
+            //                Created = x.Created,
+            //                Started = x.Started,
+            //                Ended = x.Ended,
+            //                Createdby = x.Createdby != null ? new AppUser() {
+            //                        Id = x.Createdby.Id,
+            //                        UserName = x.Createdby.UserName,
+            //                        Email = x.Createdby.Email
+            //                    } : null,
+            //                Assigned = x.Assigned != null ? new AppUser() {
+            //                        Id = x.Assigned.Id,
+            //                        UserName = x.Assigned.UserName,
+            //                        Email = x.Assigned.Email
+            //                    } : null
+            //            }).ToList()
+            //    })
+            //    .AsNoTracking()
+            //    .FirstOrDefaultAsync(x => x.Id == _id);
 
             if (project == null)
             {

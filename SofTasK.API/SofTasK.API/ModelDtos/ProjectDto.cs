@@ -11,8 +11,8 @@ namespace SofTasK.API.Models
         public string Description { get; init; } = string.Empty;
         [Required]
         public string OwnerId { get; init; }
-        [ForeignKey("OwnerId")]
         public UserDto? Owner { get; init; }
-        public List<UserDto> Collaborators { get; init; } = new List<UserDto>();
+        public List<UserDto>? Collaborators { get; init; }
+        public List<TaskDto>? AllTasks { get; init; } 
     }
 }

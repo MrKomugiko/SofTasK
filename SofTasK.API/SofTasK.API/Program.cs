@@ -99,6 +99,8 @@ builder.Services.AddSwaggerGen(swagger =>
 });
 
 builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
+builder.Services.AddScoped<ITasksRepository, TasksRepository>();
+
 
 var app = builder.Build();
 
