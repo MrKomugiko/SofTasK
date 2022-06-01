@@ -15,14 +15,14 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let task of projectTasks" (click)="toggleDetails(task.id)" [ngClass]="{'table-primary':  selectedTaskId == task.id}">
+        <tr *ngFor="let task of tasks" (click)="toggleDetails(task.id)" [ngClass]="{'table-primary':  selectedTaskId == task.id}">
           <th scope="row">{{task.id}}</th>
-          <td>Redesign Sidebar</td>
-          <td><span class="badge rounded-pill bg-primary">Moderate</span></td>
-          <td style='white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:1px;'>New addded.</td>
-          <td>----</td>
-          <td>----</td>
-          <td>----</td>
+          <td>{{task.title}}</td>
+          <td><span class="badge rounded-pill bg-primary">{{task.priority}}</span></td>
+          <td style='white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:1px;'>{{task.status}}</td>
+          <td>{{task.assigned?.userName}}</td>
+          <td>{{task.started}}</td>
+          <td>{{task.ended}}</td>
         </tr>
         <!-- <tr (click)="toggleDetails(2)">
           <th scope="row">2</th>

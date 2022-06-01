@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { take } from 'rxjs';
+import { ITask, SoftaskAPI } from '../services/softaskapi.service';
 import { TaskDetailsComponent } from './task-details/task-details.component';
 
 @Component({
@@ -10,32 +11,15 @@ import { TaskDetailsComponent } from './task-details/task-details.component';
 })
 export class ProjectComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute) { }
+  constructor(private activatedRoute: ActivatedRoute, private softaskAPI:SoftaskAPI) { }
 
   randomDate1 = new Date().toLocaleDateString();
 
   projectId!:number;
   selectedTaskId:number = -1;
 
-  projectTasks= [
-    { id:100 },
-    { id:200 },
-    { id:300 },
-    { id:400 },
-    { id:500 },
-    { id:600 },
-    { id:700 },
-    { id:800 },
-    { id:900 },
-    { id:1000 },
-    { id:1100 },
-    { id:1200 },
-    { id:1300 },
-    { id:1400 },
-    { id:1500 },
-    { id:1600 },
-    { id:1700 }
-  ]
+  tasks:Array<ITask> = [];
+
   private sub:any;
 
   @ViewChild(TaskDetailsComponent) child!: TaskDetailsComponent;
@@ -45,7 +29,13 @@ export class ProjectComponent implements OnInit {
       this.projectId = +params['id']; // {+} converts string to number
       // dispatch action to load details here.
     });
-    }
+
+    this.softaskAPI.getAllTasksByProject(this.projectId)
+      .subscribe(data => {
+        this.tasks = data;
+        console.log(data)
+    })
+  }
 
     toggleDetails(taskId:number):void
     {
