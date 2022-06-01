@@ -1,0 +1,68 @@
+<h1 class="text-center shadow">Tasks in Project #{{projectId}}</h1>
+<br>
+<div class="col-12 d-md-flex m-0">
+  <div class="col table-responsive m-0 p-0" style="height:75vh;">
+    <table class="table table-responsive table-borderless table-hover">
+      <thead class="table-light">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col" style="width:35%;" >Title</th>
+          <th scope="col">Priority</th>
+          <th scope="col" style="width:20%;">Status</th>
+          <th scope="col" >Assigned</th>
+          <th scope="col">Started</th>
+          <th scope="col">Ended</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let task of tasks" (click)="toggleDetails(task.id)" [ngClass]="{'table-primary':  selectedTaskId == task.id}">
+          <th scope="row">{{task.id}}</th>
+          <td>{{task.title}}</td>
+          <td><span class="badge rounded-pill bg-primary">{{task.priority}}</span></td>
+          <td style='white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:1px;'>{{task.status}}</td>
+          <td>{{task.assigned?.userName}}</td>
+          <td>{{task.started}}</td>
+          <td>{{task.ended}}</td>
+        </tr>
+        <!-- <tr (click)="toggleDetails(2)">
+          <th scope="row">2</th>
+          <td>Redesign Sidebar</td>
+          <td><span class="badge rounded-pill bg-warning">Important</span></td>
+          <td style='white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:1px;'>Reviewing...</td>
+          <td> @MrKomugiko </td>
+          <td>{{ randomDate1 }}</td>
+          <td>----</td>
+        </tr>
+        <tr class="table-secondary" style="opacity: 0.25;" (click)="toggleDetails(3)">
+          <th scope="row">3</th>
+          <td style='white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:1px;'>Publish app in heroku.</td>
+          <td><span class="badge rounded-pill bg-danger">Critical</span></td>
+          <td style='white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:1px;'>Done. </td>
+          <td style='white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:1px;'>@MrKomugiko, @User1, @User2 [3 more]</td>
+          <td>{{ randomDate1 }}</td>
+          <td>{{ randomDate1 }}</td>
+        </tr>
+        <tr (click)="toggleDetails(4)">
+          <th scope="row">4</th>
+          <td>Redesign Sidebar</td>
+          <td><span class="badge rounded-pill bg-primary">Moderate</span></td>
+          <td style='white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:1px;'>Waiting for assignation</td>
+          <td>----</td>
+          <td>----</td>
+          <td>----</td>
+        </tr>
+        <tr (click)="toggleDetails(5)">
+          <th scope="row">5</th>
+          <td>Redesign Sidebar</td>
+          <td><span class="badge rounded-pill bg-secondary">Minor</span></td>
+          <td>Waiting for assignation</td>
+          <td>----</td>
+          <td>----</td>
+          <td>----</td>
+        </tr> -->
+
+      </tbody>
+    </table>
+  </div>
+    <app-task-details class="col-auto" [taskId]="selectedTaskId" ></app-task-details>
+</div>

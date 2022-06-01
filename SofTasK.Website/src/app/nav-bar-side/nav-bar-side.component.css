@@ -1,0 +1,24 @@
+* > a  {
+  color:white;
+}
+
+a {
+  padding-left: .25rem;
+  padding-right: .25rem;
+}
+
+/* @media (max-width: 1170px) {
+  .icon-label {
+     display: none;
+  }
+} */
+
+.icon-label {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  font-size: small;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-inline-size: 100%;
+}

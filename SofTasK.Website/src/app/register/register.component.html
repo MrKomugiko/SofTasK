@@ -1,0 +1,26 @@
+<div class="d-flex h-100">
+  <div class="col-10 offset-3 col-md-6">
+    <div class="card border-primary text-center">
+      <div class="card-body">
+        <div class="mb-5">
+          <h1 class="h2 mb-2">Register Account</h1>
+          <span>Become a part of our community!</span>
+        </div>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <div class="row justify-content-center pb-2">
+            <div class="group-control col-10 col-md-8">
+              <input type="text" formControlName="username" placeholder="Username" autocomplete="username" class="form-control">
+              <input type="email" formControlName="email" placeholder="Email" autocomplete="email" class="form-control">
+              <input type="password" formControlName="password" placeholder="Password" autocomplete="current-password" class="form-control">
+              <input type="password" formControlName="confirmpassword" placeholder="Confirm password" autocomplete="confirm-password" class="form-control">
+            </div>
+          </div>
+          <button type="submit" class="btn btn-outline-primary mb-3" [disabled]="!registerForm.valid">Sign up</button>
+        </form>
+      </div>
+    </div>
+    <div class="text-center mt-2">
+      <span class="small">Have account already? <a routerLink="/login">Login here.</a></span>
+    </div>
+  </div>
+</div>

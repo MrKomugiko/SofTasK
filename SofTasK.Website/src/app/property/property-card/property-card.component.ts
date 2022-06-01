@@ -13,6 +13,6 @@ export class PropertyCardComponent implements OnInit{
   @Input() project!:IProject;
 
   ngOnInit(): void {
-      console.log(this.project);
+      // console.log(this.project);
   }
 }
