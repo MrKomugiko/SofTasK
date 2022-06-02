@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
-import { ITask, SoftaskAPI } from '../services/softaskapi.service';
+import { IProject, ITask, SoftaskAPI } from '../services/softaskapi.service';
 import { TaskDetailsComponent } from './task-details/task-details.component';
 
 @Component({
@@ -11,8 +11,33 @@ import { TaskDetailsComponent } from './task-details/task-details.component';
 })
 export class ProjectComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute, private softaskAPI:SoftaskAPI) { }
+  constructor(private router:Router,private activatedRoute: ActivatedRoute, private softaskAPI:SoftaskAPI) {
+   }
 
+   private storeProjectInfo()
+   {
+    const data:IProject=history.state;
+    if(data.id!=undefined)
+    {
+      console.log("SAVE PROJECT IN localStorage:"+data.name);
+      localStorage.setItem('project'+data.id, JSON.stringify(data));
+      this.currentProject = data;
+    }
+    else
+    {
+      console.log("LOAD FROM localStorage by key: \"project"+this.projectId+"\"");
+      let obj = localStorage.getItem('project'+this.projectId);
+      if(obj !=null)
+      {
+        const restoredData:IProject = JSON.parse(obj);
+        this.currentProject = restoredData;
+        return;
+      }
+      console.log("NOT FOUND DATA IN localStorage BY: \"project"+this.projectId+"\"");
+    }
+   }
+
+  currentProject:IProject | undefined;
   randomDate1 = new Date().toLocaleDateString();
 
   projectId!:number;
@@ -30,12 +55,15 @@ export class ProjectComponent implements OnInit {
       // dispatch action to load details here.
     });
 
-    this.softaskAPI.getAllTasksByProject(this.projectId)
-      .subscribe(data => {
+    this.softaskAPI.getAllTasksByProject(this.projectId).subscribe(data => {
         this.tasks = data;
         console.log(data)
     })
+
+    this.storeProjectInfo();
   }
+
+    selectedTask:ITask|undefined;
 
     toggleDetails(taskId:number):void
     {
@@ -48,7 +76,8 @@ export class ProjectComponent implements OnInit {
       }
       // assing current task to open, open it
       this.selectedTaskId = taskId;
-      this.child.taskId = taskId;
+
+      this.selectedTask = this.tasks.find(x=>x.id == this.selectedTaskId);
       console.log(this.child.hide );
       this.child.hide = false;
 

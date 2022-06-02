@@ -4,7 +4,7 @@
     <h6 class="card-subtitle mb-2 text-muted">Owner: {{project.owner.userName}}</h6>
     <p class="card-text">{{project.description}}</p>
     <div class="input-group justify-content-between mt-auto">
-      <a [routerLink]="['/project', project.id ]" class="btn btn-sm btn-primary card-link">Details</a>
+      <a [routerLink]="['/project', project.id ]" [state]="project" class="btn btn-sm btn-primary card-link">Details</a>
       <a href="#" class="btn btn-sm btn-outline-primary card-link ml-auto">Collaborate</a>
     </div>
   </div>

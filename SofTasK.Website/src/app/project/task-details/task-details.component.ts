@@ -1,5 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnInit} from '@angular/core';
+import { IProject, ITask } from 'src/app/services/softaskapi.service';
 
 @Component({
   selector: 'app-task-details',
@@ -29,16 +30,10 @@ import { Component, Input, OnInit} from '@angular/core';
 })
 
 export class TaskDetailsComponent implements OnInit {
-  private _taskId!:number;
-  @Input()
-  set taskId(value: number) {
-    console.log(value);
-    this._taskId = value;
-  }
-  get taskId():number{
-    return this._taskId;
-  }
 
+  @Input() task:ITask | undefined = undefined;
+  @Input() currentproject:IProject | undefined = undefined;
+  
   private _hide!:boolean;
   @Input()
   set hide(value: boolean) {
@@ -49,6 +44,8 @@ export class TaskDetailsComponent implements OnInit {
   get hide():boolean{
     return this._hide;
   }
+
+  taskMainData!:ITask;
 
   triggerAnimation() {
     console.log(this.hide);
@@ -62,7 +59,6 @@ export class TaskDetailsComponent implements OnInit {
   ngOnInit(): void {
     // on init - animate show
     // this.triggerAnimation();
-
-    console.log('details init');
+    console.log("DETAILS OF TASK ID:"+this.task?.id);
   }
 }

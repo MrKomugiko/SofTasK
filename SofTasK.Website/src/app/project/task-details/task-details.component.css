@@ -1,28 +1,57 @@
 .task-container {
-   margin-left:1rem;
-   width:34vw;
-   height:75vh;
-   overflow: hidden;
-   padding: 0 0 0 0;
-   display: flex;
-   border-radius:15px;
-  }
-
-.task-content {
-  padding-left:1rem;
+  margin-left: 1rem;
+  width: 34vw;
+  background-color: rgb(33, 37, 41);
+  color: white;
+  overflow: hidden;
+  padding: 0 0 0 0;
+  display: block;
+  border-radius: 15px;
 }
 
+.container-details {
+  height: 50vh;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.task-content {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  margin-right: 0.5rem;
+}
+.taskTitle {
+  text-align: center;
+  font-weight: bold;
+  font-size: 24px;
+}
+select {
+  width: 90%;
+  margin: 0.25rem;
+}
 
 @media screen and (max-width: 768px) {
   .task-container {
-    width:100%;
-    height:75vh;
-    padding-left:0.5rem;
-    padding-right:0.5rem;
-    margin-left:0rem;
-
+    width: 100%;
+    height: auto;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    margin-left: 0rem;
   }
   .task-content {
-    padding-left:0rem;
+    padding-left: 0rem;
+    margin-right: 0.5rem;
   }
+}
+
+.tableLabel {
+  color: darkgray;
+}
+
+.tags-section {
+  margin-right: 1rem;
+}
+
+td {
+  padding: 0 0 0.5rem 0;
 }

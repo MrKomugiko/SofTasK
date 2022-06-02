@@ -1,15 +1,143 @@
-<div style="width:0px; "  [@inOutAnimation]="hide ? 'closed' : 'open'">
-  <div class="task-container  shadow">
+<div style="width: 0px" [@inOutAnimation]="hide ? 'closed' : 'open'">
+  <div class="task-container shadow">
     <div class="task-content">
-        {{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}
-        {{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}
-        {{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}
-        {{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}
-        {{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}
+      <div
+        class="d-flex"
+        style="margin-top: 1rem; margin-bottom: 0.5rem; margin-right: 1rem"
+      >
+        <button class="btn btn-sm btn-outline-success">
+          Mark as completed
+        </button>
+        <button class="btn btn-sm btn-outline-primary mx-3">Modify</button>
+        <button class="btn btn-sm btn-outline-danger" style="margin-left: auto">
+          Remove Task
+        </button>
+      </div>
+      <hr />
+      <div class="container-details">
+        <div class="taskTitle"> #{{task?.id}} {{task?.title}}</div>
+        <hr />
+        <table class="table table-borderless" style="color: white">
+          <thead hidden>
+            <tr>
+              <th scope="col" style="width: 200px">label</th>
+              <th scope="col">data</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="tableLabel">Assigned:</td>
+              <td>
+                <div class="row">
+                  <div class="col-auto">
+                    <input type="button" class="btn btn-primary btn-sm" value="Join" />
+                  </div>
+                  <div *ngIf="task?.assigned == undefined; else assignedUser" class="col-8" style=" white-space: nowrap; overflow: hidden; text-overflow: ellipsis; " >
+                    not assigned yet
+                  </div>
+                  <ng-template #assignedUser>
+                    <a class="col-8 link-info" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">
+                      @{{task?.assigned?.userName}}
+                    </a>
+                </ng-template>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="tableLabel">Project:</td>
+              <td class="link-info">#{{task?.projectId}} {{currentproject?.name}}</td>
+            </tr>
+            <tr>
+              <td class="tableLabel">Priority:</td>
+              <td>
+                <select
+                  disabled
+                  class="form-select-sm"
+                  aria-label="Priority select"
+                >
+                  <option value="1">Low</option>
+                  <option selected value="2">Standard</option>
+                  <option value="3">Moderate</option>
+                  <option value="3">Major</option>
+                  <option value="3">Critical</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td class="tableLabel">Status:</td>
+              <td>
+                <select
+                  disabled
+                  class="form-select-sm"
+                  aria-label="Current status select"
+                >
+                  <option value="0" selected>Waiting for assigment</option>
+                  <option value="1">In Progress</option>
+                  <option value="2">Debuging</option>
+                  <option value="3">Revieving</option>
+                  <option value="3">Done</option>
+                  <option value="3">Abadoned</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td class="tableLabel pb-0" [colSpan]="2">
+                Detailed description:
+              </td>
+            </tr>
 
-        {{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}
-        {{taskId}}{{taskId}}{{taskId}} Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. {{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}{{taskId}}
-
+            <tr>
+              <td class="pt-0" [colSpan]="2">
+                Contrary to popular belief, Lorem Ipsum is not simply random
+                text. It has roots in a piece of classical Latin literature from
+                45 BC, making it over 2000 years old. Richard McClintock, a
+                Latin professor at Hampden-Sydney College in Virginia, looked up
+                one of the more obscure Latin words, consectetur, from a Lorem
+                Ipsum passage, and going through the cites of the word in
+                classical literature, discovered the undoubtable source. Lorem
+                Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus
+                Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero,
+                written in 45 BC. This book is a treatise on the theory of
+                ethics, very popular during the Renaissance. The first line of
+                Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line
+                in section 1.10.32Contrary to popular b 2000 years old. Richard
+                Latin professor at Hampden-Sydney College in Virginia, looked up
+                one of the more obscure Latin words, consectetur, from a Lorem
+                Ipsum passage, and going through the cites of the word in
+                classical literature, discovered the undoubtable source. Lorem
+                Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus
+                Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero,
+                written in 45 BC. This book is a treatise on the theory of
+                ethics, very popular during the Renaissance. The first line of
+                Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line
+                in section 1.10.32Contrary to popular b
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row">
+          <div class="col-12 col-md-auto">
+            <span class="tableLabel">Start:</span> {{task?.started | date}}
+          </div>
+          <div class="col-12 col-md-auto">
+            <span class="tableLabel">Finish:</span> {{task?.ended | date}}
+          </div>
+          <div class="col-12 col-md-auto">
+            <span class="tableLabel">Total development time:</span> 0 days
+          </div>
+        </div>
+        <hr />
+        <div class="tags-section">
+          <span class="tableLabel"> Tags: </span>
+          <!-- <div *ngFor="let tag in project">
+            <span class="m-1 badge bg-secondary">Deasign</span>
+          </div> -->
+        </div>
+        <hr />
+        <div class="text-center tableLabel">
+          <small> Added by: <a>@{{task?.createdby?.userName}}</a>, {{task?.created | date}} </small>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 </div>

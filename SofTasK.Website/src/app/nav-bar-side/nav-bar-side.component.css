@@ -22,3 +22,12 @@ a {
   text-overflow: ellipsis;
   max-inline-size: 100%;
 }
+
+.scrollable  {
+  position: fixed;
+  height:100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  text-align:justify;
+}
+
