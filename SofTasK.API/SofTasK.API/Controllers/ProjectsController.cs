@@ -9,7 +9,7 @@ using SofTasK.API.Models;
 
 namespace SofTasK.API.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class ProjectsController : ControllerBase

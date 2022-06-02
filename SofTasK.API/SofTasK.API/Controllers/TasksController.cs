@@ -9,6 +9,7 @@ using SofTasK.API.Models;
 
 namespace SofTasK.API.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class TasksController : ControllerBase
@@ -100,7 +101,6 @@ namespace SofTasK.API.Controllers
         //}
 
         // DELETE: api/Tasks/5
-        [Authorize]
         [HttpDelete("{_id}")]
         public async Task<IActionResult> DeleteTaskAsync(int _id)
         {
