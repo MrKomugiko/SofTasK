@@ -9,8 +9,8 @@ import { catchError, observable, Observable, throwError } from 'rxjs';
 
 export class SoftaskAPI {
 
-  private baseUrl:string = 'https://localhost:7054/api/';
-//  private baseUrl: string = 'https://softask-api.herokuapp.com/api/';
+//private baseUrl:string = 'https://localhost:7054/api/';
+ private baseUrl: string = 'https://softask-api.herokuapp.com/api/';
 
 
 
