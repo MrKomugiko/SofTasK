@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SofTasK.API.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SofTasK.API.Models
@@ -16,8 +17,11 @@ namespace SofTasK.API.Models
         public string Title { get; init; }
         [Required(ErrorMessage = "Status is required")]
 
-        public string Status { get; init; } = "New";
-        public int Priority { get; init; }
+        [MaxLength(1500)]
+        public string Description { get; init; }
+
+        public TaskStatuses Status { get; init; } = TaskStatuses.notSelected;
+        public ProrityLevels Priority { get; init; } = ProrityLevels.notSelected;
         public DateTime Created { get; init; } = DateTime.UtcNow;
         public DateTime? Started { get; init; }
         public DateTime? Ended { get; init; }
@@ -26,7 +30,7 @@ namespace SofTasK.API.Models
         [ForeignKey("OwnerId")] 
         public AppUser? Createdby { get; init; }
 
-        public string AssignedId { get; init; }
+        public string? AssignedId { get; init; }
         [ForeignKey("AssignedId")]
         public AppUser? Assigned { get; init; }
     }

@@ -18,7 +18,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let task of tasks" (click)="toggleDetails(task.id)" [ngClass]="{'table-primary':  selectedTaskId == task.id}">
+        <tr [ngStyle]="{'opacity': (task?.ended!=null) ? '0.4' : '1'}" *ngFor="let task of tasks" (click)="toggleDetails(task.id)" [ngClass]="{'table-primary':  selectedTaskId == task.id}">
           <th scope="row">{{task.id}}</th>
           <td>{{task.title}}</td>
           <td><span class="badge rounded-pill bg-primary">{{task.priority}}</span></td>
@@ -27,47 +27,10 @@
           <td>{{task.started}}</td>
           <td>{{task.ended}}</td>
         </tr>
-        <tr (click)="toggleDetails(2)">
-          <th scope="row">2</th>
-          <td>Redesign Sidebar</td>
-          <td><span class="badge rounded-pill bg-warning">Important</span></td>
-          <td style='white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:1px;'>Reviewing...</td>
-          <td> @MrKomugiko </td>
-          <td>{{ randomDate1 }}</td>
-          <td>----</td>
-        </tr>
-        <tr class="table-secondary" style="opacity: 0.25;" (click)="toggleDetails(3)">
-          <th scope="row">3</th>
-          <td style='white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:1px;'>Publish app in heroku.</td>
-          <td><span class="badge rounded-pill bg-danger">Critical</span></td>
-          <td style='white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:1px;'>Done. </td>
-          <td style='white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:1px;'>@MrKomugiko, @User1, @User2 [3 more]</td>
-          <td>{{ randomDate1 }}</td>
-          <td>{{ randomDate1 }}</td>
-        </tr>
-        <tr (click)="toggleDetails(4)">
-          <th scope="row">4</th>
-          <td>Redesign Sidebar</td>
-          <td><span class="badge rounded-pill bg-primary">Moderate</span></td>
-          <td style='white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:1px;'>Waiting for assignation</td>
-          <td>----</td>
-          <td>----</td>
-          <td>----</td>
-        </tr>
-        <tr (click)="toggleDetails(5)">
-          <th scope="row">5</th>
-          <td>Redesign Sidebar</td>
-          <td><span class="badge rounded-pill bg-secondary">Minor</span></td>
-          <td>Waiting for assignation</td>
-          <td>----</td>
-          <td>----</td>
-          <td>----</td>
-        </tr>
-
       </tbody>
     </table>
 
   </div>
   </div>
-    <app-task-details class="col-auto" [task]="selectedTask" [currentproject]="currentProject"></app-task-details>
+    <app-task-details class="col-auto" [task]="selectedTask" [currentproject]="currentProject" (delete)="removeTaskElement($event)"></app-task-details>
 </div>

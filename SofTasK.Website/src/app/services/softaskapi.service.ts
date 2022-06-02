@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
-import { tokenize } from '@angular/compiler/src/ml_parser/lexer';
+import { catchError, observable, Observable, throwError } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +9,8 @@ import { tokenize } from '@angular/compiler/src/ml_parser/lexer';
 
 export class SoftaskAPI {
 
-  //private baseUrl:string = 'https://localhost:7054/api/';
-  private baseUrl: string = 'https://softask-api.herokuapp.com/api/';
+  private baseUrl:string = 'https://localhost:7054/api/';
+//  private baseUrl: string = 'https://softask-api.herokuapp.com/api/';
 
 
 
@@ -62,6 +61,20 @@ export class SoftaskAPI {
 
   }
 
+  public RemoveTask(id:number)
+  {
+    const token = this.getUserToken();
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    if(token !=null)
+    {
+      return this.http.delete(this.baseUrl + `Tasks/${id}`, {headers:headers});
+    }
+    else
+      throw new Observable<Object>();
+  }
 
 
   public login(data: ILoginRequest): Observable<ILoginResponse> {
@@ -110,11 +123,32 @@ export interface ITask {
   id: number,
   projectId: number,
   title: string,
-  status: string,
-  priority: number,
+  description: string,
+  status: taskStatuses,
+  priority: priorityLevels,
   created: Date,
   started: Date | null,
   ended: Date | null,
   createdby: IUser,
   assigned: IUser | null
+}
+
+export enum priorityLevels {
+  notSelected,
+  Low,
+  Standard,
+  Moderate,
+  Major,
+  Critical
+}
+
+export enum taskStatuses {
+  notSelected,
+  New,
+  WaitingForAssigment,
+  InProgress,
+  Revieving,
+  Done,
+  Delayed,
+  Abaddoned
 }

@@ -33,85 +33,86 @@ namespace SofTasK.API.Controllers
                 return tasks.Select(x => x.AsDto()).ToList();
             }
 
-            //// GET: api/Projects/5
-            //[Authorize]
-            //[HttpGet("{_id}")]
-            //public async Task<ActionResult<TaskDto>> GetTaskAsync(int _id)
-            //{
-            //    Project? project = await _projectsRepository.GetSingleOrDefaultAsync(_id);
+        //// GET: api/Projects/5
+        //[Authorize]
+        //[HttpGet("{_id}")]
+        //public async Task<ActionResult<TaskDto>> GetTaskAsync(int _id)
+        //{
+        //    Project? project = await _projectsRepository.GetSingleOrDefaultAsync(_id);
 
-            //    if (project == null)
-            //        return NotFound();
+        //    if (project == null)
+        //        return NotFound();
 
-            //    return project.AsDto();
-            //}
+        //    return project.AsDto();
+        //}
 
-            //// PUT: api/Projects/5
-            //[Authorize]
-            //[HttpPut("{_id}")]
-            //public async Task<IActionResult> PutProjectAsync(int _id, ProjectEditDto _changedProject)
-            //{
-            //    if (_id != _changedProject.Id)
-            //    {
-            //        return BadRequest(error: new { Message = "Updating Projet id do not match with existing project." });
-            //    }
+        //// PUT: api/Projects/5
+        //[Authorize]
+        //[HttpPut("{_id}")]
+        //public async Task<IActionResult> PutProjectAsync(int _id, ProjectEditDto _changedProject)
+        //{
+        //    if (_id != _changedProject.Id)
+        //    {
+        //        return BadRequest(error: new { Message = "Updating Projet id do not match with existing project." });
+        //    }
 
-            //    var respond = await _projectsRepository.UpdateAsync(_id, new Project
-            //    {
-            //        Name = _changedProject.Name,
-            //        Description = _changedProject.Description
-            //    }
-            //    );
+        //    var respond = await _projectsRepository.UpdateAsync(_id, new Project
+        //    {
+        //        Name = _changedProject.Name,
+        //        Description = _changedProject.Description
+        //    }
+        //    );
 
-            //    if (respond.ISuccessed)
-            //        return NoContent();
-            //    else
-            //        return BadRequest(error: respond.Message);
-            //}
+        //    if (respond.ISuccessed)
+        //        return NoContent();
+        //    else
+        //        return BadRequest(error: respond.Message);
+        //}
 
-            //// POST: api/Projects
-            //[Authorize]
-            //[HttpPost]
-            //public async Task<ActionResult<ProjectDto>> PostProjectAsync(CreateProjectDto _newProject)
-            //{
-            //    if (_newProject == null)
-            //    {
-            //        return Problem("Entity set 'ApplicationDbContext.Projects'  is null.");
-            //    }
+        //// POST: api/Projects
+        //[Authorize]
+        //[HttpPost]
+        //public async Task<ActionResult<ProjectDto>> PostProjectAsync(CreateProjectDto _newProject)
+        //{
+        //    if (_newProject == null)
+        //    {
+        //        return Problem("Entity set 'ApplicationDbContext.Projects'  is null.");
+        //    }
 
-            //    AppUser user = await _userManager.FindByNameAsync(_userManager.GetUserName(User));
+        //    AppUser user = await _userManager.FindByNameAsync(_userManager.GetUserName(User));
 
-            //    Project newProject = new Project() with
-            //    {
-            //        Description = _newProject.Description,
-            //        Name = _newProject.Name,
-            //        OwnerId = user.Id,
-            //        Owner = user
-            //    };
+        //    Project newProject = new Project() with
+        //    {
+        //        Description = _newProject.Description,
+        //        Name = _newProject.Name,
+        //        OwnerId = user.Id,
+        //        Owner = user
+        //    };
 
 
-            //    var result = await _projectsRepository.AddAsync(newProject);
+        //    var result = await _projectsRepository.AddAsync(newProject);
 
-            //    if (result.IsSuccessed && result.project != null)
-            //        return CreatedAtAction("GetProjects", new { id = result.project.Id }, result.project.AsDto());
-            //    else
-            //        return BadRequest(error: result.Message);
+        //    if (result.IsSuccessed && result.project != null)
+        //        return CreatedAtAction("GetProjects", new { id = result.project.Id }, result.project.AsDto());
+        //    else
+        //        return BadRequest(error: result.Message);
 
-            //}
+        //}
 
-            //// DELETE: api/Projects/5
-            //[Authorize]
-            //[HttpDelete("{_id}")]
-            //public async Task<IActionResult> DeleteProjectAsync(int _id)
-            //{
-            //    var project = await _projectsRepository.GetSingleOrDefaultAsync(_id);
+        // DELETE: api/Tasks/5
+        [Authorize]
+        [HttpDelete("{_id}")]
+        public async Task<IActionResult> DeleteTaskAsync(int _id)
+        {
+            var task = await _tasksRepository.TaskExists(_id);
 
-            //    if (project == null) return NotFound();
+            if (! task) 
+                return NotFound(new { Message = "Error while deleting task, task do not exist" });
 
-            //    await _projectsRepository.RemoveAsync(project);
+            await _tasksRepository.RemoveAsync(_id);
 
-            //    return NoContent();
-            //}
+            return NoContent();
         }
+    }
 
     }

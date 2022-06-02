@@ -34,14 +34,14 @@ export class RegisterComponent implements OnInit {
       confirmpassword: this.registerForm.controls["confirmpassword"].value
     }
 
-    this.softaskAPI.register(payload).subscribe(
-      (respond) => {
+    this.softaskAPI.register(payload).subscribe({
+      next:(respond) => {
           console.log("Register respond:"+respond);
           this.router.navigate(["/login"]);
       },
-      (error) => {
+      error:(error) => {
         console.log(error);
-      }
+      }}
     )
   }
 }

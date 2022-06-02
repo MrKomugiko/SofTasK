@@ -17,7 +17,7 @@ namespace SofTasK.API.Interfaces
         ///// </summary>
         ///// <param name="_id"> Existing project Id.</param>
         ///// <returns>Project by ID, or null if not exist.</returns>
-        //Task<Project?> GetSingleOrDefaultAsync(int _id);
+        Task<TaskModel?> GetSingleOrDefaultAsync(int _id);
 
         ///// <summary>
         ///// 
@@ -38,6 +38,7 @@ namespace SofTasK.API.Interfaces
         ///// </summary>
         ///// <param name="_project">Existing project from db.</param>
         ///// <returns>boolean state if removing succesed</returns>
-        //Task<bool> RemoveAsync(Project _project);
+        Task<bool> TaskExists(int _id);
+        Task<bool> RemoveAsync(int _id);
     }
 }

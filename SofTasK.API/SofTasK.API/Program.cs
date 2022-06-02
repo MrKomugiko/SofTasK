@@ -59,6 +59,8 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddEndpointsApiExplorer();
+
+
 builder.Services.AddSwaggerGen(swagger =>
 {
     // To Enable authorization using Swagger (JWT)    
@@ -90,13 +92,18 @@ builder.Services.AddSwaggerGen(swagger =>
                 new List<string> {}
             }
         });
+
+
     //This is to generate the Default UI of Swagger Documentation    
     swagger.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
         Title = "SofTasK API",
     });
+
+    swagger.UseInlineDefinitionsForEnums();
 });
+
 
 builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
 builder.Services.AddScoped<ITasksRepository, TasksRepository>();

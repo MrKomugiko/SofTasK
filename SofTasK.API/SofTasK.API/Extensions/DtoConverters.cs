@@ -17,13 +17,17 @@ namespace SofTasK.API.Extensions
                 AllTasks = project.AllTasks==null?new List<TaskDto>():project.AllTasks.Select(x=>x.AsDto()).ToList()
             };
 
-        public static UserDto AsDto(this AppUser appUser) =>
-            new UserDto() with
+        public static UserDto? AsDto(this AppUser appUser)
+        {
+            if (appUser == null) return null;
+            return new UserDto() with
             {
                 Id = appUser.Id,
                 UserName = appUser.UserName,
                 Email = appUser.Email
             };
+
+        }
 
         public static TaskDto AsDto(this TaskModel taskModel)
         {
@@ -31,6 +35,7 @@ namespace SofTasK.API.Extensions
             {
                 Id =taskModel.Id,
                 Title = taskModel.Title,
+                Description = taskModel.Description,
                 Priority = taskModel.Priority,
                 Status = taskModel.Status,
                 

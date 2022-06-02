@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
-import { IProject, ITask, SoftaskAPI } from '../services/softaskapi.service';
+import { IProject, ITask, SoftaskAPI, taskStatuses } from '../services/softaskapi.service';
 import { TaskDetailsComponent } from './task-details/task-details.component';
 
 @Component({
@@ -12,7 +12,8 @@ import { TaskDetailsComponent } from './task-details/task-details.component';
 export class ProjectComponent implements OnInit {
 
   constructor(private router:Router,private activatedRoute: ActivatedRoute, private softaskAPI:SoftaskAPI) {
-   }
+
+  }
 
    private storeProjectInfo()
    {
@@ -50,6 +51,9 @@ export class ProjectComponent implements OnInit {
   @ViewChild(TaskDetailsComponent) child!: TaskDetailsComponent;
 
   ngOnInit(): void {
+
+
+
     this.sub = this.activatedRoute.params.subscribe(params => {
       this.projectId = +params['id']; // {+} converts string to number
       // dispatch action to load details here.
@@ -63,7 +67,23 @@ export class ProjectComponent implements OnInit {
     this.storeProjectInfo();
   }
 
-    selectedTask:ITask|undefined;
+    selectedTask!:ITask;
+
+    removeTaskElement(tasktodelete:ITask)
+    {
+      console.log("remove task element trriggered");
+
+      let indexToRemove = this.tasks.map(task=>task.id).indexOf(tasktodelete.id);
+      console.log("task with index: "+indexToRemove+' for delete');
+
+      this.tasks = this.tasks.filter((value,index) => {
+        if(index == indexToRemove) return false;
+
+        return true;
+      })
+
+      console.log(this.tasks);
+    }
 
     toggleDetails(taskId:number):void
     {
@@ -77,7 +97,15 @@ export class ProjectComponent implements OnInit {
       // assing current task to open, open it
       this.selectedTaskId = taskId;
 
-      this.selectedTask = this.tasks.find(x=>x.id == this.selectedTaskId);
+      let t = this.tasks.find(x=>x.id == this.selectedTaskId);
+      if(t != undefined)
+      {
+        this.selectedTask = t;;
+      }
+      else {
+        this.selectedTaskId = -1;
+        return;
+      }
       console.log(this.child.hide );
       this.child.hide = false;
 

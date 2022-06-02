@@ -1,15 +1,12 @@
-<div style="width: 0px" [@inOutAnimation]="hide ? 'closed' : 'open'">
+<div *ngIf="task != undefined" style="width: 0px" [@inOutAnimation]="hide ? 'closed' : 'open'">
   <div class="task-container shadow">
     <div class="task-content">
-      <div
-        class="d-flex"
-        style="margin-top: 1rem; margin-bottom: 0.5rem; margin-right: 1rem"
-      >
+      <div class="d-flex" style="margin-top: 1rem; margin-bottom: 0.5rem; margin-right: 1rem">
         <button class="btn btn-sm btn-outline-success">
           Mark as completed
         </button>
         <button class="btn btn-sm btn-outline-primary mx-3">Modify</button>
-        <button class="btn btn-sm btn-outline-danger" style="margin-left: auto">
+        <button (click)="onDeleteButtonClick()" class="btn btn-sm btn-outline-danger" style="margin-left: auto">
           Remove Task
         </button>
       </div>
@@ -50,33 +47,16 @@
             <tr>
               <td class="tableLabel">Priority:</td>
               <td>
-                <select
-                  disabled
-                  class="form-select-sm"
-                  aria-label="Priority select"
-                >
-                  <option value="1">Low</option>
-                  <option selected value="2">Standard</option>
-                  <option value="3">Moderate</option>
-                  <option value="3">Major</option>
-                  <option value="3">Critical</option>
+                <select disabled class="form-select-sm" aria-label="CPriority select" [(ngModel)]="task.priority">
+                  <option *ngFor="let prority of proritySelectList" [ngValue]="prority.name">{{prority.name}}</option>
                 </select>
               </td>
             </tr>
             <tr>
               <td class="tableLabel">Status:</td>
               <td>
-                <select
-                  disabled
-                  class="form-select-sm"
-                  aria-label="Current status select"
-                >
-                  <option value="0" selected>Waiting for assigment</option>
-                  <option value="1">In Progress</option>
-                  <option value="2">Debuging</option>
-                  <option value="3">Revieving</option>
-                  <option value="3">Done</option>
-                  <option value="3">Abadoned</option>
+                <select  disabled class="form-select-sm" aria-label="CPriority select" [(ngModel)]="task.status">
+                  <option *ngFor="let status of statusSelectList" [ngValue]="status.name">{{status.name}}</option>
                 </select>
               </td>
             </tr>
@@ -85,36 +65,13 @@
                 Detailed description:
               </td>
             </tr>
-
-            <tr>
-              <td class="pt-0" [colSpan]="2">
-                Contrary to popular belief, Lorem Ipsum is not simply random
-                text. It has roots in a piece of classical Latin literature from
-                45 BC, making it over 2000 years old. Richard McClintock, a
-                Latin professor at Hampden-Sydney College in Virginia, looked up
-                one of the more obscure Latin words, consectetur, from a Lorem
-                Ipsum passage, and going through the cites of the word in
-                classical literature, discovered the undoubtable source. Lorem
-                Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus
-                Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero,
-                written in 45 BC. This book is a treatise on the theory of
-                ethics, very popular during the Renaissance. The first line of
-                Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line
-                in section 1.10.32Contrary to popular b 2000 years old. Richard
-                Latin professor at Hampden-Sydney College in Virginia, looked up
-                one of the more obscure Latin words, consectetur, from a Lorem
-                Ipsum passage, and going through the cites of the word in
-                classical literature, discovered the undoubtable source. Lorem
-                Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus
-                Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero,
-                written in 45 BC. This book is a treatise on the theory of
-                ethics, very popular during the Renaissance. The first line of
-                Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line
-                in section 1.10.32Contrary to popular b
-              </td>
-            </tr>
           </tbody>
         </table>
+
+        <div style="margin-bottom:1rem; margin-top:-1rem; min-height:100px;">
+          {{task.description}}
+        </div>
+        <hr>
         <div class="row">
           <div class="col-12 col-md-auto">
             <span class="tableLabel">Start:</span> {{task?.started | date}}

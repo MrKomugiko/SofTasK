@@ -10,7 +10,7 @@
 }
 
 .container-details {
-  height: 50vh;
+  max-height: 50vh;
   overflow: scroll;
   overflow-x: hidden;
 }
@@ -30,7 +30,7 @@ select {
   margin: 0.25rem;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
   .task-container {
     width: 100%;
     height: auto;
