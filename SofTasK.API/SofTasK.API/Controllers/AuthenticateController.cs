@@ -55,9 +55,10 @@ namespace SofTasK.API.Controllers
 
                 return Ok(new
                 {
+                    user = user.UserName,
                     token = new JwtSecurityTokenHandler().WriteToken(token),
                     expiration = token.ValidTo
-                });
+                }) ;
             }
             return Unauthorized();
         }

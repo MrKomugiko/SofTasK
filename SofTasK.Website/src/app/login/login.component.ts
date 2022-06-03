@@ -32,6 +32,9 @@ export class LoginComponent implements OnInit {
       (respond) => {
         if (respond.token != null) {
           localStorage.setItem('userInfo', JSON.stringify(respond));
+          console.log("get login data = "+JSON.stringify(respond))
+          this.softaskAPI.updateLoggedUser(respond.user);
+          this.softaskAPI.loggedUserdata=respond;
           console.log("LOGGED IN");
           this.router.navigate(["/projects"]);
         }

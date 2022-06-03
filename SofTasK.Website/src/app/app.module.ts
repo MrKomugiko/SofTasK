@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
-import { AlwaysAuthGuard, AppComponent, AuthService, OnlyLogged, OnlyWhenUserNotLogged } from './app.component';
+import { AlwaysAuthGuard, AppComponent, AuthService, OnlyIfExist, OnlyLogged, OnlyWhenUserNotLogged } from './app.component';
 import { PropertyCardComponent } from './property/property-card/property-card.component';
 import { PropertyListComponent } from './property/property-list/property-list.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
@@ -45,7 +45,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AlwaysAuthGuard,
     OnlyWhenUserNotLogged,
     OnlyLogged,
-    AuthService
+    AuthService,
+    OnlyIfExist
   ],
   bootstrap: [AppComponent]
 })

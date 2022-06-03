@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SoftaskAPI } from '../services/softaskapi.service';
+import { interval, Subscription } from 'rxjs';
+import { ILoginRequest, ILoginResponse, IUser, SoftaskAPI } from '../services/softaskapi.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -9,9 +10,30 @@ import { SoftaskAPI } from '../services/softaskapi.service';
 })
 export class NavBarComponent implements OnInit {
 
-  constructor(private softaskAPI:SoftaskAPI,private router:Router) { }
+  subscription:Subscription;
+  currentUsername!: string ;
+
+  constructor(private softaskAPI:SoftaskAPI,private router:Router) {
+    this.subscription = softaskAPI.currentUser$.subscribe (
+      name => {
+        this.currentUsername = name;
+      }
+      )
+  }
+
 
   ngOnInit(): void {
+    let name = this.softaskAPI.loggedUserdata?.user;
+    if(name != null)
+      this.currentUsername = name;
+    else // get name from localstore
+    {
+      const obj = localStorage.getItem("userInfo");
+      if (obj != null) {
+        const userInfo: ILoginResponse = JSON.parse(obj);
+        this.currentUsername = userInfo.user;
+      }
+    }
   }
 
   logout()

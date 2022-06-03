@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { catchError, observable, Observable, throwError } from 'rxjs';
+import { catchError, observable, Observable, Subject, throwError } from 'rxjs';
 
 
 @Injectable({
@@ -9,9 +9,20 @@ import { catchError, observable, Observable, throwError } from 'rxjs';
 
 export class SoftaskAPI {
 
- private baseUrl:string = 'https://localhost:7054/api/';
- //private baseUrl: string = 'https://softask-api.herokuapp.com/api/';
+ //private baseUrl:string = 'https://localhost:7054/api/';
+ private baseUrl: string = 'https://softask-api.herokuapp.com/api/';
 
+  private currentUserSource= new Subject<string>();
+
+  currentUser$ = this.currentUserSource.asObservable();
+  loggedUserdata:ILoginResponse|null = null
+
+
+  updateLoggedUser(username:string)
+  {
+    console.log('next '+ username);
+    this.currentUserSource.next(username);
+  }
 
 
   constructor(private http: HttpClient) {
@@ -99,6 +110,7 @@ export interface IRegisterRequest {
   confirmpassword: string
 }
 export interface ILoginResponse {
+  user: string,
   token: string,
   expiration: Date
 }

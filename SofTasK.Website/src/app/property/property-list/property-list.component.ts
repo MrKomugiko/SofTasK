@@ -15,6 +15,10 @@ export class PropertyListComponent implements OnInit {
   ngOnInit(): void {
     this.softaskAPI.getAllProjects()
       .subscribe(data => {
+        if(data.length==0)
+        {
+          console.log('empty');
+        }
         this.projects = data;
         console.log(data)
       })

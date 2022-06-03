@@ -50,20 +50,8 @@ export class TaskDetailsComponent implements OnInit {
     return this._hide;
   }
 
-  proritySelectList:Array<{id:number; name:string;}> = [];
-
+  proritySelectList:Array<{id:number; name:string; color:string}> = [];
   statusSelectList:Array<{id:number; name:string;}> = [];
-
-  // statusSelectList:Array<{id:number; name:string;}> = [
-  //   {id: taskStatuses.notSelected , name: "not selected"},
-  //   {id: taskStatuses.New , name: "Recently created"},
-  //   {id: taskStatuses.WaitingForAssigment , name: 'Waiting for assigment'},
-  //   {id: taskStatuses.InProgress , name: 'In progress'},
-  //   {id: taskStatuses.Revieving , name: 'Revieving'},
-  //   {id: taskStatuses.Done , name: 'Done'},
-  //   {id: taskStatuses.Delayed , name: 'Delayed'},
-  //   {id: taskStatuses.Abaddoned , name: 'Abaddoned'},
-  // ];
 
   @Output() delete:EventEmitter<ITask> = new EventEmitter<ITask>();
   onDeleteButtonClick() {
@@ -92,27 +80,25 @@ export class TaskDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     Object.values(taskStatuses).forEach((x, index)=> {
       if(Number.isNaN(Number(x)) == false) return; // jezeli to liczba, nie doawaj do listy
       this.statusSelectList.push({id:index,name:x.toString()})
     });
-
     Object.values(priorityLevels).forEach((x, index)=> {
       if(Number.isNaN(Number(x)) == false) return; // jezeli to liczba, nie doawaj do listy
-      this.proritySelectList.push({id:index,name:x.toString()})
+      this.proritySelectList.push({id:index,name:x.toString(),color:proritycolors[index]})
     });
-
-
-      if(this.task == undefined)
-    {
-      console.log('just init not set anything, task is undefined');
-      return;
-    }
-
-    // on init - animate show
-    // this.triggerAnimation();
-    console.log(this.proritySelectList);
-    console.log("DETAILS OF TASK ID:"+this.task?.id);
   }
+
 }
+  enum proritycolors
+  {
+    "rbga(0,0,0,0)" = 0, // not selected
+    "rgb(3, 252, 144)"= 1, // Low
+    "rgb(3, 252, 44)" = 2, // standard
+    "rgb(219, 252, 3" = 3,
+    "rgb(252, 198, 3)" = 4, // major
+    "rgb(252, 3, 3)" = 5 // criticval
+  }
+
+

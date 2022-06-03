@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { take } from 'rxjs';
-import { IProject, ITask, SoftaskAPI, taskStatuses } from '../services/softaskapi.service';
+import { IProject, ITask, priorityLevels, SoftaskAPI, taskStatuses } from '../services/softaskapi.service';
 import { TaskDetailsComponent } from './task-details/task-details.component';
 
 @Component({
@@ -38,7 +37,7 @@ export class ProjectComponent implements OnInit {
     }
    }
 
-  currentProject:IProject | undefined;
+  currentProject!:IProject;
   randomDate1 = new Date().toLocaleDateString();
 
   projectId!:number;
@@ -51,20 +50,25 @@ export class ProjectComponent implements OnInit {
   @ViewChild(TaskDetailsComponent) child!: TaskDetailsComponent;
 
   ngOnInit(): void {
-
-
-
     this.sub = this.activatedRoute.params.subscribe(params => {
       this.projectId = +params['id']; // {+} converts string to number
       // dispatch action to load details here.
     });
 
     this.softaskAPI.getAllTasksByProject(this.projectId).subscribe(data => {
+      if(data.length==0)
+      {
+        console.log('empty project');
+        this.router.navigate(['/projects'])
+        return;
+      }
+      else
+      {
         this.tasks = data;
         console.log(data)
+        this.storeProjectInfo();
+      }
     })
-
-    this.storeProjectInfo();
   }
 
     selectedTask!:ITask;
@@ -111,6 +115,20 @@ export class ProjectComponent implements OnInit {
 
     }
 
+    getcolorByPrority(prority: string) : string
+    {
+      let colorIndex:number = (priorityLevels as any)[prority];
+      return proritycolors[colorIndex];
+    }
+  }
+  enum proritycolors
+  {
+    "rbga(0,0,0,0)" = 0, // not selected
+    "rgb(210, 212, 98)"= 1, // Low
+    "rgb(92, 134, 10)" = 2, // standard
+    "rgb(255, 194, 70)" = 3, // moderate
+    "rgb(199, 52, 8)" = 4, // major
+    "rgb(85, 10, 30)" = 5 // criticval
   }
 
 

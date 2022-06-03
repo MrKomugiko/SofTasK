@@ -1,6 +1,7 @@
 import { Component, Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
-import { ILoginResponse, SoftaskAPI } from './services/softaskapi.service';
+import { ActivatedRoute, ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { catchError, map, Observable, of } from 'rxjs';
+import { ILoginResponse, ITask, SoftaskAPI } from './services/softaskapi.service';
 
 @Component({
   selector: 'app-root',
@@ -53,6 +54,68 @@ export class OnlyWhenUserNotLogged implements CanActivate {
         }
       }
     }
+
+@Injectable()
+export class OnlyIfExist implements CanActivate {
+  constructor(private router: Router, private softaskAPI: SoftaskAPI) {
+  }
+
+  public apiGet(id: number): Observable<ITask[]> {
+    return this.softaskAPI.getAllTasksByProject(id);
+  }
+
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+    const projectId = route.paramMap.get('id');
+    if (projectId == null) return of(false);
+
+    return this.apiGet(+projectId).pipe(
+      map((response) => {
+        if(response.length > 0)
+          {
+            console.log('ok');
+            return true;
+          }
+          else
+          {
+            console.log('project tasks is empty');
+            this.router.navigate(['/projects'])
+            return false;
+          }
+        },
+        catchError((error) => {
+          console.log('error loading project'+error);
+          this.router.navigate(['/projects'])
+          return of(false);
+         })
+      )
+    )
+  }
+}
+//         return this.softaskAPI.getAllTasksByProject(+projectId).subscribe({
+//           next:(data) => {
+//           if(data.length!=0)
+//           {
+//             console.log('ok');
+//             return true;
+//           }
+//           else
+//           {
+//             console.log('project doesnt exist');
+//             this.router.navigate(['/projects'])
+//             return false;
+//           }
+//       },
+//       error:(error)=>{
+//         console.log('error loading project'+error);
+//         this.router.navigate(['/projects'])
+//         return false;
+//         },
+//       })
+// console.log("end" )
+//       return false;
+
+
+
 
 @Injectable()
 export class AuthService {

@@ -21,7 +21,7 @@
         <tr [ngStyle]="{'opacity': (task?.ended!=null) ? '0.4' : '1'}" *ngFor="let task of tasks" (click)="toggleDetails(task.id)" [ngClass]="{'table-primary':  selectedTaskId == task.id}">
           <th scope="row">{{task.id}}</th>
           <td>{{task.title}}</td>
-          <td><span class="badge rounded-pill bg-primary">{{task.priority}}</span></td>
+          <td><span class="badge rounded-pill" [ngStyle]="{'background-color': getcolorByPrority(task.priority.toString())}" >{{task.priority}}</span></td>
           <td style='white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:1px;'>{{task.status}}</td>
           <td>{{task.assigned?.userName}}</td>
           <td>{{task.started}}</td>
