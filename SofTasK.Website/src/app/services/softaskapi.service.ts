@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
   providedIn: 'root'
 })
 
+
 export class SoftaskAPI {
 
- private baseUrl:string = 'https://localhost:7054/api/';
- //private baseUrl: string = 'https://softask-api.herokuapp.com/api/';
+
+ private baseUrl:string;
 
   private currentUserSource= new Subject<string>();
 
@@ -26,6 +28,15 @@ export class SoftaskAPI {
 
 
   constructor(private http: HttpClient) {
+     //private baseUrl: string = '';
+    if (environment.production) {
+      // for production
+      this.baseUrl = 'https://softask-api.herokuapp.com/api/';
+    } else {
+      // for development
+      this.baseUrl = 'https://localhost:7054/api/';
+      
+    }
   }
 
 
