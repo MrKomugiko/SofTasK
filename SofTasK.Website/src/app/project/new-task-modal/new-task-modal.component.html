@@ -1,0 +1,81 @@
+<div class="modal-header">
+  <h4 class="modal-title">New Task</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<form #newTaskPost="ngForm" (ngSubmit)="onSubmit(newTaskPost)">
+  <div class="modal-body">
+
+    <!-- TASK NAME -->
+      <div class="form-group row p-1">
+        <label class="control-label col-sm-3 mt-auto mb-auto">Task name</label>
+        <div class="col-sm-9">
+          <input type="text" name="name" class="form-control" id="name" placeholder="Enter name for a task." ngModel />
+        </div>
+      </div>
+
+    <!-- PRIORITY SELECTE -->
+      <div class="form-group row p-1">
+        <label class="control-label col-sm-3 mt-auto mb-auto">Priority</label>
+        <div class="col-sm-9">
+          <select class="form-select" name="priority" id="priority" aria-label="Priority select" [(ngModel)]="selectedPriority" >
+            <option
+              *ngFor="let prority of proritySelectList"
+              [ngValue]="prority.id"
+              [ngStyle]="{'background-color': prority.color, 'color':prority.id>3?'white':'black'}">
+              {{prority.name}}
+            </option>
+          </select>
+        </div>
+      </div>
+
+       <!-- STATUS SELECTE -->
+       <div class="form-group row p-1">
+        <label class="control-label col-sm-3 mt-auto mb-auto">Status</label>
+        <div class="col-sm-9">
+          <select class="form-select" name="status" id="status" aria-label="Status select" [(ngModel)]="selectedStatus" >
+            <option
+              *ngFor="let status of statusSelectList"
+              [ngValue]="status.id" >
+              {{status.name}}
+            </option>
+          </select>
+        </div>
+      </div>
+
+    <div class="form-group row p-1">
+      <label class="ontrol-label col-12 col-sm-3">Description</label>
+      <div class="col-12 col-sm-9">
+        <textarea class="form-control" name="description" id="description"  rows="5" placeholder="Enter your task description" style="resize:none;" ngModel></textarea>
+      </div>
+    </div>
+
+    <div class="form-group row p-1">
+      <label class="ontrol-label col-12 col-sm-3 mt-auto mb-auto">Tags</label>
+      <div class="col-12 col-sm-9">
+        <input type="text" class="form-control" name="tags" id="tags" (ngModelChange)="printdata($event)" ngModel />
+      </div>
+    </div>
+    <!-- TAGS SECTION -->
+    <div class="text-center my-2">
+      <span class="tag mx-1 badge" *ngFor="let tag of tagArray">
+        {{tag}}
+      </span>
+      <!-- <span class="tag mx-1 badge">Backend</span>
+      <span class="tag mx-1 badge">Easy</span>
+      <span class="tag mx-1 badge">Fun to do</span>
+      <span class="tag mx-1 badge">Free coffe</span> -->
+    </div>
+
+    <div class="modal-footer row px-3">
+      <div class="row justify-content-between">
+        <button type="button" class="col-5 col-sm-3 btn btn-danger mr-1" (click)="activeModal.close('Close click')">
+          Close
+        </button>
+        <button type="submit" class="col-5 col-sm-3 btn btn-outline-success ml-1">
+          Submit
+        </button>
+      </div>
+    </div>
+
+  </div>
+</form>

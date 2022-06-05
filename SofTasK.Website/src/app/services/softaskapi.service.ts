@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { catchError, observable, Observable, Subject, throwError } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, Subject } from 'rxjs';
 
 
 @Injectable({
@@ -9,8 +9,8 @@ import { catchError, observable, Observable, Subject, throwError } from 'rxjs';
 
 export class SoftaskAPI {
 
- //private baseUrl:string = 'https://localhost:7054/api/';
- private baseUrl: string = 'https://softask-api.herokuapp.com/api/';
+ private baseUrl:string = 'https://localhost:7054/api/';
+ //private baseUrl: string = 'https://softask-api.herokuapp.com/api/';
 
   private currentUserSource= new Subject<string>();
 

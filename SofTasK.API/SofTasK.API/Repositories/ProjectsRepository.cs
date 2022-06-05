@@ -140,7 +140,7 @@ namespace SofTasK.API.Repositories
             return false;
         }
 
-        private bool ProjectExists(int _id)
+        public bool ProjectExists(int _id)
         {
             return (_context.Projects?.Any(x => x.Id == _id))
                 .GetValueOrDefault();

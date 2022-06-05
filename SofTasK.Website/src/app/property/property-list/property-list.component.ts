@@ -13,6 +13,7 @@ export class PropertyListComponent implements OnInit {
   projects:Array<IProject> = [];
 
   ngOnInit(): void {
+    console.log('init property-list')
     this.softaskAPI.getAllProjects()
       .subscribe(data => {
         if(data.length==0)
@@ -20,7 +21,6 @@ export class PropertyListComponent implements OnInit {
           console.log('empty');
         }
         this.projects = data;
-        console.log(data)
       })
   }
 }

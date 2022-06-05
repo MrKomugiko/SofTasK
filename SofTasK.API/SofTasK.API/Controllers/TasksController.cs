@@ -15,24 +15,31 @@ namespace SofTasK.API.Controllers
     public class TasksController : ControllerBase
     {
         private readonly ITasksRepository _tasksRepository;
+        private readonly IProjectsRepository _projectsRepository;
+
 
         private readonly UserManager<AppUser> _userManager;
 
-        public TasksController(UserManager<AppUser> userManager, ITasksRepository tasksRepository)
+        public TasksController(UserManager<AppUser> userManager, ITasksRepository tasksRepository, IProjectsRepository projectsRepository)
         {
             _userManager = userManager;
             _tasksRepository = tasksRepository;
+            _projectsRepository = projectsRepository;
         }
 
         // GET: api/Tasks/1
-            [HttpGet("{_projectId}")]
-            public async Task<ActionResult<IEnumerable<TaskDto>>> GetTaskAsync(int _projectId)
-            {
-                IEnumerable<TaskModel> tasks = await _tasksRepository.GetTasksByProjectAsync(_projectId);
-                if (!tasks.Any()) return new List<TaskDto>(); // 0
+        [HttpGet("{_projectId}")]
+        public async Task<ActionResult<IEnumerable<TaskDto>>?> GetTaskAsync(int _projectId)
+        {
+            // check if project exist
+            bool projectExist = _projectsRepository.ProjectExists(_projectId);
+            if (!projectExist) return BadRequest(error:$"Project {_projectId} do not exist");  
+  
+            IEnumerable<TaskModel> tasks = await _tasksRepository.GetTasksByProjectAsync(_projectId);
+            if (!tasks.Any()) return new List<TaskDto>(); // 0
 
-                return tasks.Select(x => x.AsDto()).ToList();
-            }
+            return tasks.Select(x => x.AsDto()).ToList();
+        }
 
         //// GET: api/Projects/5
         //[Authorize]

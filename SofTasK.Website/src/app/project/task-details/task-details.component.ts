@@ -42,7 +42,7 @@ export class TaskDetailsComponent implements OnInit {
   private _hide!:boolean;
   @Input()
   set hide(value: boolean) {
-    console.log('hide:'+value);
+    // console.log('hide:'+value);
     this._hide = value;
     this.triggerAnimation();
   }
@@ -56,18 +56,18 @@ export class TaskDetailsComponent implements OnInit {
   @Output() delete:EventEmitter<ITask> = new EventEmitter<ITask>();
   onDeleteButtonClick() {
     //you need to emit event
-    console.log('delete clicked');
-    console.log('processing');
+    // console.log('delete clicked');
+    // console.log('processing');
     this.softaskAPI.RemoveTask(this.task.id).subscribe({
       next:(data) => {
-        console.log(data)
+        // console.log(data)
       },
       error:(msg:{ ok:boolean, error: { message:string }}) => {
         alert('error: '+ msg.error.message)
       },
       complete:() => {
-        console.log('deleted completed');
-        console.log('emit event "delete"');
+        // console.log('deleted completed');
+        // console.log('emit event "delete"');
         this.delete.emit(this.task);
         this.hide = true;
       }
@@ -76,7 +76,7 @@ export class TaskDetailsComponent implements OnInit {
   }
 
   triggerAnimation() {
-    console.log(this.hide);
+    // console.log(this.hide);
   }
 
   ngOnInit(): void {

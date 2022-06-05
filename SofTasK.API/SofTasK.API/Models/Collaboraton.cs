@@ -14,5 +14,9 @@ namespace SofTasK.API.Models
         public int? ProjectId { get; set; }
         [ForeignKey("ProjectId")]
         public Project? Project { get; set; }
+
+        public DateTime RequestDate { get; set; } = DateTime.UtcNow;
+        public DateTime? RespondDate { get; set; } = null;
+        public bool? Confirmed { get; set; }
     }
 }

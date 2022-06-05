@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-
-import { AlwaysAuthGuard, AppComponent, AuthService, OnlyIfExist, OnlyLogged, OnlyWhenUserNotLogged } from './app.component';
+import { AlwaysAuthGuard, AppComponent, AuthService, OnlyLogged, OnlyWhenUserNotLogged } from './app.component';
 import { PropertyCardComponent } from './property/property-card/property-card.component';
 import { PropertyListComponent } from './property/property-list/property-list.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
@@ -17,6 +16,11 @@ import { ProjectComponent } from './project/project.component';
 import { NavBarSideComponent } from './nav-bar-side/nav-bar-side.component';
 import { TaskDetailsComponent } from './project/task-details/task-details.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NewTaskModalComponent } from './project/new-task-modal/new-task-modal.component';
+// import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+
 
 @NgModule({
   declarations: [
@@ -29,7 +33,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     DashboardComponent,
     ProjectComponent,
     NavBarSideComponent,
-    TaskDetailsComponent
+    TaskDetailsComponent,
+    NewTaskModalComponent
   ],
   imports: [
     BrowserModule,
@@ -38,15 +43,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgbModule
+    // NgbModule
   ],
   providers: [
     SoftaskAPI,
     AlwaysAuthGuard,
     OnlyWhenUserNotLogged,
     OnlyLogged,
-    AuthService,
-    OnlyIfExist
+    AuthService
   ],
   bootstrap: [AppComponent]
 })

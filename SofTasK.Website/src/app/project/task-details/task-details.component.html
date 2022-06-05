@@ -47,7 +47,7 @@
             <tr>
               <td class="tableLabel">Priority:</td>
               <td>
-                <select disabled class="form-select-sm" aria-label="CPriority select" [(ngModel)]="task.priority">
+                <select disabled class="form-select-sm" aria-label="Priority select" [(ngModel)]="task.priority">
                   <option *ngFor="let prority of proritySelectList" [ngValue]="prority.name">{{prority.name}}</option>
                 </select>
               </td>
@@ -55,7 +55,7 @@
             <tr>
               <td class="tableLabel">Status:</td>
               <td>
-                <select  disabled class="form-select-sm" aria-label="CPriority select" [(ngModel)]="task.status">
+                <select  disabled class="form-select-sm" aria-label="Status select" [(ngModel)]="task.status">
                   <option *ngFor="let status of statusSelectList" [ngValue]="status.name">{{status.name}}</option>
                 </select>
               </td>

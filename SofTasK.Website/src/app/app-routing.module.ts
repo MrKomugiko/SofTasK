@@ -5,7 +5,7 @@ import { PropertyListComponent } from "./property/property-list/property-list.co
 import { BrowserModule } from "@angular/platform-browser";
 import { RegisterComponent } from "./register/register.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
-import { OnlyIfExist,OnlyLogged } from "./app.component";
+import { OnlyLogged } from "./app.component";
 import { ProjectComponent } from "./project/project.component";
 
 const routes: Routes = [
@@ -13,7 +13,7 @@ const routes: Routes = [
   {path:'login',component:LoginComponent},
   {path:'register',component:RegisterComponent},
   {path:'projects',component:PropertyListComponent, canActivate: [OnlyLogged]},
-  {path:'project/:id',component:ProjectComponent, canActivate: [OnlyLogged,OnlyIfExist]},
+  {path:'project/:id',component:ProjectComponent, canActivate: [OnlyLogged]},
   {path:'dashboard',component:DashboardComponent, canActivate: [OnlyLogged]},
 
   {path:'**', redirectTo:('/')}

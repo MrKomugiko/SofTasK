@@ -1,0 +1,10 @@
+.tag:hover {
+  background-color: red;
+  transition: 0.25s;
+  transform: scale(1.5);
+}
+.tag{
+  background-color: gray;
+  color: white;
+  transition: 0.25s;
+}
