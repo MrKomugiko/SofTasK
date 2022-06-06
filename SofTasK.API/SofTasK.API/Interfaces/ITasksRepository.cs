@@ -38,7 +38,9 @@ namespace SofTasK.API.Interfaces
         ///// </summary>
         ///// <param name="_project">Existing project from db.</param>
         ///// <returns>boolean state if removing succesed</returns>
-        Task<bool> TaskExists(int _id);
+        bool TaskExists(int _id);
         Task<bool> RemoveAsync(int _id);
+        Task<(bool IsSuccessed, string Message, TaskModel? taskModel)> AddAsync(TaskModel _newTask);
+        Task<TaskModel?> GetTaskByIdAsync(int _id);
     }
 }

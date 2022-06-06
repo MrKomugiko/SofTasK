@@ -33,5 +33,6 @@ namespace SofTasK.API.Models
         public string? AssignedId { get; init; }
         [ForeignKey("AssignedId")]
         public AppUser? Assigned { get; init; }
+        public string Tags { get; init; } = "";
     }
 }

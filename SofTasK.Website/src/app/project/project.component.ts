@@ -73,12 +73,16 @@ export class ProjectComponent implements OnInit {
         return;
       }
     });
-    1
+
   }
   closeResult = '';
   openNewTaskModal() {
     const modalRef = this.modalService.open(NewTaskModalComponent);
-    modalRef.componentInstance.name = 'input name';
+    modalRef.componentInstance.projectId = this.currentProject.id;
+    modalRef.componentInstance.newTask.subscribe((newTaskData:ITask)=>{
+      this.tasks.push(newTaskData)
+      console.log("RECIEVED NEW TASK : "+JSON.stringify(newTaskData))}
+      );
   }
 
   selectedTask!: ITask;

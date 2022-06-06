@@ -32,13 +32,28 @@ export class SoftaskAPI {
     if (environment.production) {
       // for production
       this.baseUrl = 'https://softask-api.herokuapp.com/api/';
+      console.log(this.baseUrl);
     } else {
       // for development
       this.baseUrl = 'https://localhost:7054/api/';
-      
+      console.log(this.baseUrl);
     }
   }
 
+  public AddTaskPOST(payload:any) : Observable<ITask>
+  {
+    const token = this.getUserToken();
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    })
+    if(token != null)
+    {
+      return this.http.post<ITask>(this.baseUrl + 'Tasks', payload, { headers: headers })
+    }
+
+    return new Observable<ITask>();
+  }
 
   public getAllProjects(): Observable<IProject[]> {
     const token = this.getUserToken();
@@ -76,7 +91,7 @@ export class SoftaskAPI {
     });
     if(token !=null)
     {
-      return this.http.get<ITask[]>(this.baseUrl + 'Tasks/' + projectId, { headers: headers })
+      return this.http.get<ITask[]>(this.baseUrl + 'Tasks/All/' + projectId, { headers: headers })
     }
 
     return new Observable<ITask[]>();
@@ -142,6 +157,7 @@ export interface IUser {
   userName: string,
   email: string
 }
+
 export interface ITask {
   id: number,
   projectId: number,
@@ -153,8 +169,22 @@ export interface ITask {
   started: Date | null,
   ended: Date | null,
   createdby: IUser,
-  assigned: IUser | null
+  assigned: IUser | null,
+  tags: string[]
 }
+
+export interface ITaskCreateRequest {
+  projectId: number,
+  title: string,
+  description: string,
+  status: taskStatuses,
+  priority: priorityLevels,
+  ownerId: string,
+  tags: string[]
+}
+
+
+
 
 export enum priorityLevels {
   notSelected,

@@ -19,5 +19,6 @@ namespace SofTasK.API.ModelDtos
         public DateTime? Ended { get; init; }
         public UserDto? Createdby { get; init; }
         public UserDto? Assigned { get; init; }
+        public string[] Tags { get; init; }
     }
 }

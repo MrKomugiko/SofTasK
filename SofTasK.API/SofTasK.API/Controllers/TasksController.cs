@@ -27,9 +27,9 @@ namespace SofTasK.API.Controllers
             _projectsRepository = projectsRepository;
         }
 
-        // GET: api/Tasks/1
-        [HttpGet("{_projectId}")]
-        public async Task<ActionResult<IEnumerable<TaskDto>>?> GetTaskAsync(int _projectId)
+        // GET: api/Tasks/All/1
+        [HttpGet("All/{_projectId}")]
+        public async Task<ActionResult<IEnumerable<TaskDto>>?> GetTasksAsync(int _projectId)
         {
             // check if project exist
             bool projectExist = _projectsRepository.ProjectExists(_projectId);
@@ -39,6 +39,20 @@ namespace SofTasK.API.Controllers
             if (!tasks.Any()) return new List<TaskDto>(); // 0
 
             return tasks.Select(x => x.AsDto()).ToList();
+        }
+        
+        // GET: api/Task/1
+        [HttpGet("{_taskId}")]
+        public async Task<ActionResult<TaskDto?>> GetTaskAsync(int _taskId)
+        {
+            // check if project exist
+            bool taskExists = _tasksRepository.TaskExists(_taskId);
+            if (!taskExists) return BadRequest(error: $"Task with given ID: {_taskId} do not exist");
+
+            TaskModel? task = await _tasksRepository.GetTaskByIdAsync(_taskId);
+            if (task == null) return NotFound(); // 0
+
+            return task.AsDto();
         }
 
         //// GET: api/Projects/5
@@ -77,43 +91,45 @@ namespace SofTasK.API.Controllers
         //        return BadRequest(error: respond.Message);
         //}
 
-        //// POST: api/Projects
-        //[Authorize]
-        //[HttpPost]
-        //public async Task<ActionResult<ProjectDto>> PostProjectAsync(CreateProjectDto _newProject)
-        //{
-        //    if (_newProject == null)
-        //    {
-        //        return Problem("Entity set 'ApplicationDbContext.Projects'  is null.");
-        //    }
+        // POST: api/Tasks
+        [HttpPost]
+        public async Task<ActionResult<TaskDto>> PostTaskAsync(CreateTaskDto _newTask)
+        {
+            if (_newTask == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Projects'  is null.");
+            }
 
-        //    AppUser user = await _userManager.FindByNameAsync(_userManager.GetUserName(User));
+            string userGUID = _userManager.FindByNameAsync(_userManager.GetUserName(User)).Result.Id;
 
-        //    Project newProject = new Project() with
-        //    {
-        //        Description = _newProject.Description,
-        //        Name = _newProject.Name,
-        //        OwnerId = user.Id,
-        //        Owner = user
-        //    };
+            TaskModel newTask = new TaskModel() with
+            {
+                ProjectId = _newTask.ProjectId, 
+                Title = _newTask.Title, 
+                Description = _newTask.Description, 
+                Status = _newTask.Status, 
+                Priority = _newTask.Priority, 
+                OwnerId = userGUID,
+                Tags = String.Join(",", _newTask.Tags)
+            };
 
 
-        //    var result = await _projectsRepository.AddAsync(newProject);
+            (bool IsSuccessed, string Message, TaskModel? taskModel) = await _tasksRepository.AddAsync(newTask);
 
-        //    if (result.IsSuccessed && result.project != null)
-        //        return CreatedAtAction("GetProjects", new { id = result.project.Id }, result.project.AsDto());
-        //    else
-        //        return BadRequest(error: result.Message);
+            if (IsSuccessed && taskModel != null)
+                return CreatedAtAction("GetTask", new { _taskId = taskModel.Id }, taskModel.AsDto());
+            else
+                return BadRequest(error: Message);
 
-        //}
+        }
 
         // DELETE: api/Tasks/5
         [HttpDelete("{_id}")]
         public async Task<IActionResult> DeleteTaskAsync(int _id)
         {
-            var task = await _tasksRepository.TaskExists(_id);
+            bool taskExist = _tasksRepository.TaskExists(_id);
 
-            if (! task) 
+            if (! taskExist) 
                 return NotFound(new { Message = "Error while deleting task, task do not exist" });
 
             await _tasksRepository.RemoveAsync(_id);

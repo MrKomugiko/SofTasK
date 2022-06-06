@@ -33,20 +33,22 @@ namespace SofTasK.API.Extensions
         {
             TaskDto x = new TaskDto() with
             {
-                Id =taskModel.Id,
+                Id = taskModel.Id,
                 Title = taskModel.Title,
                 Description = taskModel.Description,
                 Priority = taskModel.Priority,
                 Status = taskModel.Status,
-                
-                Created = taskModel.Created,    
+
+                Created = taskModel.Created,
                 Started = taskModel.Started,
                 Ended = taskModel.Ended,
-                
+
                 ProjectId = taskModel.ProjectId,
 
                 Createdby = taskModel.Createdby.AsDto(),
-                Assigned = taskModel.Assigned.AsDto()
+                Assigned = taskModel.Assigned.AsDto(),
+
+                Tags = taskModel.Tags.Split(',')
             };
 
             return x;

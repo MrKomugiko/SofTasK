@@ -52,10 +52,37 @@ namespace SofTasK.API.Repositories
             return false;
         }
 
-        public async Task<bool> TaskExists(int _id)
+        public bool TaskExists(int _id)
         {
             return (_context.Tasks?.Any(x => x.Id == _id))
                 .GetValueOrDefault();
+        }
+
+        public async Task<(bool IsSuccessed, string Message, TaskModel? taskModel)> AddAsync(TaskModel _newTask)
+        {
+            if (_newTask == null) return (false, "Task cannot be empty.", null);
+
+            if (_context.Projects.Any(x => x.Name == _newTask.Title))
+            {
+                return (false, "Task Title is already in use.", null);
+            }
+
+            _context.Tasks.Add(_newTask);
+
+            if (await _context.SaveChangesAsync() > 0)
+            {
+                return (true, " Succesfully added new task.", _newTask);
+            }
+
+            return (false, "Creating task failed.", null);
+        }
+
+        public async Task<TaskModel?> GetTaskByIdAsync(int _id)
+        {
+            return await _context.Tasks
+                .Include(x => x.Createdby)
+                .Include(x => x.Assigned)
+                .SingleAsync(x=>x.Id ==_id);
         }
     }
 }

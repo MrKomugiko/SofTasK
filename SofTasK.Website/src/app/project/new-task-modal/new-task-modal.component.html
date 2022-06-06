@@ -4,12 +4,14 @@
 </div>
 <form #newTaskPost="ngForm" (ngSubmit)="onSubmit(newTaskPost)">
   <div class="modal-body">
+      <!--  HIDDEN Project ID reference -->
+      <input type="number" hidden name="projectId" id="projectId" [(ngModel)]="projectId" />
 
     <!-- TASK NAME -->
       <div class="form-group row p-1">
-        <label class="control-label col-sm-3 mt-auto mb-auto">Task name</label>
+        <label class="control-label col-sm-3 mt-auto mb-auto">Task title</label>
         <div class="col-sm-9">
-          <input type="text" name="name" class="form-control" id="name" placeholder="Enter name for a task." ngModel />
+          <input type="text" name="title" class="form-control" id="title" placeholder="Enter name for a task." ngModel />
         </div>
       </div>
 
@@ -52,7 +54,7 @@
     <div class="form-group row p-1">
       <label class="ontrol-label col-12 col-sm-3 mt-auto mb-auto">Tags</label>
       <div class="col-12 col-sm-9">
-        <input type="text" class="form-control" name="tags" id="tags" (ngModelChange)="printdata($event)" ngModel />
+        <input type="text" class="form-control" name="tags" id="tags" (ngModelChange)="convertToTagArray($event)" placeholder="Separate tags with a comma." ngModel />
       </div>
     </div>
     <!-- TAGS SECTION -->
