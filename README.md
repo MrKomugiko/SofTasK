@@ -54,10 +54,10 @@ of the Postgress database by the Heroku host and the need to manually refresh th
 
 ## Features
 &check; authentication via JWT  
-&check; Registration and login 
-&check; Acces to all Projects created on server
-&check; Browse projects details
-&check; operations on tasks, adding new, deleting existing
+&check; Registration and login  
+&check; Acces to all Projects created on server  
+&check; Browse projects details  
+&check; operations on tasks, adding new, deleting existing  
 
 <a name="screens"/>
 
