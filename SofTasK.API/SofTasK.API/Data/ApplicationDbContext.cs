@@ -5,7 +5,7 @@ using SofTasK.API.Models;
 
 namespace SofTasK.API.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+    public class ApplicationDbContext : IdentityDbContext<AppUser>
     {
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {

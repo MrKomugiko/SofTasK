@@ -5,12 +5,12 @@ import { PropertyListComponent } from "./property/property-list/property-list.co
 import { BrowserModule } from "@angular/platform-browser";
 import { RegisterComponent } from "./register/register.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
-import { OnlyLogged } from "./app.component";
+import { OnlyLogged, OnlyWhenUserNotLogged } from "./app.component";
 import { ProjectComponent } from "./project/project.component";
 
 const routes: Routes = [
   {path:'', component:DashboardComponent, canActivate: [OnlyLogged]},
-  {path:'login',component:LoginComponent},
+  {path:'login',component:LoginComponent, canActivate:[OnlyWhenUserNotLogged]},
   {path:'register',component:RegisterComponent},
   {path:'projects',component:PropertyListComponent, canActivate: [OnlyLogged]},
   {path:'project/:id',component:ProjectComponent, canActivate: [OnlyLogged]},

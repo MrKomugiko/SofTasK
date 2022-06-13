@@ -1,10 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IProject, ITask, priorityLevels, SoftaskAPI, taskStatuses } from '../services/softaskapi.service';
+import { IProject, ITask, priorityLevels, SoftaskAPI, taskStatuses } from '../services/softask-api.service';
 import { TaskDetailsComponent } from './task-details/task-details.component';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap'
 import { NewTaskModalComponent } from './new-task-modal/new-task-modal.component';
+import { Observable, pipe, take } from 'rxjs';
+import { isNull } from '@angular/compiler/src/output/output_ast';
+import { AuthService } from '../services/auth-service.service';
+import { MemberType, ProjectService } from './project-service.service';
 
 @Component({
   selector: 'app-project',
@@ -13,7 +17,12 @@ import { NewTaskModalComponent } from './new-task-modal/new-task-modal.component
 })
 export class ProjectComponent implements OnInit {
 
-  constructor(private modalService: NgbModal, private router: Router, private activatedRoute: ActivatedRoute, private softaskAPI: SoftaskAPI) {
+  constructor(private modalService: NgbModal,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private softaskAPI: SoftaskAPI,
+    private authService:AuthService,
+    private projectService:ProjectService) {
 
   }
 
@@ -21,21 +30,23 @@ export class ProjectComponent implements OnInit {
   {
     const data: IProject = history.state;
     if (data.id != undefined) {
-      console.log("SAVE PROJECT IN localStorage:" + data.name);
+      // console.log("SAVE PROJECT IN localStorage:" + data.name);
       localStorage.setItem('project' + data.id, JSON.stringify(data));
       this.currentProject = data;
     }
     else {
-      console.log("LOAD FROM localStorage by key: \"project" + this.projectId + "\"");
+      // console.log("LOAD FROM localStorage by key: \"project" + this.projectId + "\"");
       let obj = localStorage.getItem('project' + this.projectId);
       if (obj != null) {
         const restoredData: IProject = JSON.parse(obj);
         this.currentProject = restoredData;
         return;
       }
-      console.log("NOT FOUND DATA IN localStorage BY: \"project" + this.projectId + "\"");
+      // console.log("NOT FOUND DATA IN localStorage BY: \"project" + this.projectId + "\"");
     }
   }
+  isProjectOwner:boolean = false;
+  isAMember:boolean=false;
 
   currentProject!: IProject;
   randomDate1 = new Date().toLocaleDateString();
@@ -57,15 +68,17 @@ export class ProjectComponent implements OnInit {
 
     this.softaskAPI.getAllTasksByProject(this.projectId).subscribe({
       next: (data: ITask[]) => {
-        if (data.length == 0) {
-          console.log('project dont have tasks')
-          return;
-        }
-        else {
+
           this.tasks = data;
           console.log(data)
           this.storeProjectInfo();
-        }
+
+          let userType:MemberType;
+          if(this.isProjectOwner) userType= MemberType.Owner;
+          else if(this.isAMember) userType= MemberType.Member;
+          else userType= MemberType.Anonymous;
+
+          this.projectService.updateProjectInfo(this.projectId, userType, this.currentProject)
       },
       error: (err: HttpErrorResponse) => {
         console.log(`[ error: ${err.status}] error: ${err.error} message: ${err.message}`);
@@ -74,8 +87,18 @@ export class ProjectComponent implements OnInit {
       }
     });
 
+    let data = this.authService.GetUserRolesData();
+    if(data.length >0)
+    {
+      data.some((element) => {
+        if (element.Id === this.projectId) {
+          this.isProjectOwner = true;
+          this.isAMember = true;
+      }
+    })
   }
-  closeResult = '';
+  }
+
   openNewTaskModal() {
     const modalRef = this.modalService.open(NewTaskModalComponent);
     modalRef.componentInstance.projectId = this.currentProject.id;

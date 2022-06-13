@@ -1,7 +1,12 @@
+<h1 *ngIf="isProjectOwner"> HELLO BOSS !</h1>
 <h1 class="text-center shadow">Project #{{projectId}} Dashboard</h1>
-<hr>
+<!-- MEMBER USERS SECTION -->
+<div *ngIf="isAMember" >
+  <hr>
   <button class="btn btn-lg btn-outline-primary" (click)="openNewTaskModal()">Add Task</button>
-<hr>
+  <hr>
+</div>
+
 <br>
 
 <div class="col-12 d-md-flex m-0">
@@ -36,5 +41,5 @@
 
   </div>
   </div>
-    <app-task-details class="col-auto" [task]="selectedTask" [currentproject]="currentProject" (delete)="removeTaskElement($event)"></app-task-details>
+    <app-task-details class="col-auto" [task]="selectedTask" [currentproject]="currentProject"  [member]="isAMember" (delete)="removeTaskElement($event)"></app-task-details>
 </div>

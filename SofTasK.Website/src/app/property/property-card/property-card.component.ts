@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { IProject } from "src/app/services/softaskapi.service";
+import { IProject } from "src/app/services/softask-api.service";
 
 @Component({
   selector: 'app-property-card',

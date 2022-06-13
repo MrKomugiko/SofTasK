@@ -1,6 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import { IProject, ITask, priorityLevels, SoftaskAPI, taskStatuses } from 'src/app/services/softaskapi.service';
+import { IProject, ITask, priorityLevels, SoftaskAPI, taskStatuses } from 'src/app/services/softask-api.service';
 
 
 @Component({
@@ -37,6 +37,7 @@ export class TaskDetailsComponent implements OnInit {
   }
 
   @Input() task!:ITask;
+  @Input() member:boolean = false;
   @Input() currentproject:IProject | undefined = undefined;
 
   private _hide!:boolean;

@@ -2,7 +2,7 @@ import { isNull } from '@angular/compiler/src/output/output_ast';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ITask, priorityLevels, SoftaskAPI, taskStatuses } from 'src/app/services/softaskapi.service';
+import { ITask, priorityLevels, SoftaskAPI, taskStatuses } from 'src/app/services/softask-api.service';
 
 @Component({
   selector: 'app-new-task-modal',
@@ -13,6 +13,7 @@ import { ITask, priorityLevels, SoftaskAPI, taskStatuses } from 'src/app/service
 export class NewTaskModalComponent implements OnInit {
 
   @Input() projectId:number|null = null;
+
   @Output() newTask:EventEmitter<ITask> = new EventEmitter<ITask>();
 
   proritySelectList:Array<{id:number; name:string; color:string}> = [];

@@ -1,6 +1,7 @@
 import { Component, Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { ILoginResponse, SoftaskAPI } from './services/softaskapi.service';
+import { AuthService, ILoginResponse } from './services/auth-service.service';
+import { SoftaskAPI } from './services/softask-api.service';
 
 @Component({
   selector: 'app-root',
@@ -29,10 +30,18 @@ export class AlwaysAuthGuard implements CanActivate {
   }
 @Injectable()
 export class OnlyWhenUserNotLogged implements CanActivate {
-  constructor(private authservice:AuthService){ }
+  constructor(private authservice:AuthService, private router:Router){ }
 
   canActivate() : boolean {
-    return ! this.authservice.isUserLogin;
+    if(this.authservice.isUserLogin)
+    {
+      this.router.navigate(['dashboard']);
+      return false;
+    }
+    else
+    {
+      return true;
+    }
     }
   }
 
@@ -53,72 +62,3 @@ export class OnlyWhenUserNotLogged implements CanActivate {
         }
       }
     }
-
-// @Injectable()
-// export class OnlyIfExist implements CanActivate {
-//   constructor(private router: Router, private softaskAPI: SoftaskAPI) {
-//   }
-
-//   public apiGet(id: number): Observable<ITask[]> {
-//     return this.softaskAPI.getAllTasksByProject(id);
-//   }
-
-//   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-//     const projectId = route.paramMap.get('id');
-//     if (projectId == null) return of(false);
-
-//     return this.apiGet(+projectId).pipe(
-//       map((response) => {
-//         if(response.length > 0)
-//           {
-//             console.log('ok');
-//             return true;
-//           }
-//           else
-//           {
-//             console.log('project tasks is empty');
-//             this.router.navigate(['/projects'])
-//             return false;
-//           }
-//         },
-//         catchError((error) => {
-//           console.log('error loading project'+error);
-//           this.router.navigate(['/projects'])
-//           return of(false);
-//          })
-//       )
-//     )
-//   }
-// }
-//
-@Injectable()
-export class AuthService {
-  constructor(private softaskAPI: SoftaskAPI) { }
-  get isUserLogin(): boolean {
-
-    const userObj = localStorage.getItem("userInfo");
-    if (userObj == null)
-      return false;
-
-    const userInfo: ILoginResponse = JSON.parse(userObj);
-
-    if (userInfo.token == null)
-      return false;
-
-    if (this.isExpired(userInfo.expiration)) {
-      return false;
-    }
-
-    return true;
-  }
-
-  isExpired(date: Date): boolean {
-    const expirationDate: Date = new Date(Date.parse(date.toString()));
-    if (expirationDate < new Date()) {
-      // console.log("token time expired");
-      this.softaskAPI.logout();
-      return true;
-    }
-    return false;
-  }
-}

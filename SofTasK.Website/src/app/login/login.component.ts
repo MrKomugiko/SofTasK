@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ILoginRequest, SoftaskAPI } from '../services/softaskapi.service';
+import { AuthService, ILoginRequest } from '../services/auth-service.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
     username:['',Validators.required],
     password:['',Validators.required]
   })
-  constructor(private formbuilder:FormBuilder,private softaskAPI: SoftaskAPI, private router:Router) {
+  constructor(private formbuilder:FormBuilder,private authService:AuthService, private router:Router) {
 
    }
 
@@ -28,15 +28,17 @@ export class LoginComponent implements OnInit {
       password: this.loginForm.controls["password"].value
     }
 
-    this.softaskAPI.login(payload).subscribe(
+    this.authService.login(payload).subscribe(
       (respond) => {
         if (respond.token != null) {
           localStorage.setItem('userInfo', JSON.stringify(respond));
-          console.log("get login data = "+JSON.stringify(respond))
-          this.softaskAPI.updateLoggedUser(respond.user);
-          this.softaskAPI.loggedUserdata=respond;
-          console.log("LOGGED IN");
-          this.router.navigate(["/projects"]);
+          // console.log("get login data = "+JSON.stringify(respond))
+          this.authService.updateLoggedUser(respond.user);
+          this.authService.registerUserRoles(respond.token);
+
+          this.authService.loggedUserdata=respond;
+          // console.log("LOGGED IN");
+          this.router.navigate(["dashboard"]);
         }
       },
       (msg) => {

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using SofTasK.API.Data;
 using SofTasK.API.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -14,13 +16,15 @@ namespace SofTasK.API.Controllers
     [ApiController]
     public class AuthenticateController : ControllerBase
     {
+        private readonly ApplicationDbContext _context;
         private readonly UserManager<AppUser> userManager;
         private readonly IConfiguration _configuration;
 
-        public AuthenticateController(UserManager<AppUser> userManager, IConfiguration configuration)
+        public AuthenticateController(UserManager<AppUser> userManager, IConfiguration configuration, ApplicationDbContext context)
         {
             this.userManager = userManager;
             _configuration = configuration;
+            _context = context;
         }
 
         [HttpPost]
@@ -44,6 +48,8 @@ namespace SofTasK.API.Controllers
                 }
 
                 var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+                List<CustomRole> ownedprojects = GetRoles(_context,user);
+                authClaims.Add(new Claim("privileges", JsonConvert.SerializeObject(ownedprojects)));
 
                 var token = new JwtSecurityToken(
                     issuer: _configuration["JWT:ValidIssuer"],
@@ -57,12 +63,55 @@ namespace SofTasK.API.Controllers
                 {
                     user = user.UserName,
                     token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo
-                }) ;
+                    expiration = token.ValidTo,
+                    privileges = ownedprojects
+                });
             }
             return Unauthorized();
-        }
 
+            static List<CustomRole> GetRoles(ApplicationDbContext _context, AppUser _user)
+            {
+                var roles = new List<CustomRole>();
+
+                roles = _context.Projects.Where(x=>x.OwnerId == _user.Id)
+                    .Select(x=> new CustomRole {
+                        Id = x.Id,
+                        ProjectName = x.Name,
+                        Role = new List<string>()
+                        {
+                            "Owner"
+                        }
+                    }).ToList();
+
+                return roles;
+                //return new List<object>(){
+                //    new {
+                //        Id = 1,
+                //        ProjectName = "project1",
+                //        Role = new List<string>()
+                //        {
+                //            "Owner",
+                //        }
+                //    },
+
+                //    new {
+                //        Id = 2,
+                //        ProjectName = "project2",
+                //        Role = new List<string>()
+                //        {
+                //            "Admin",
+                //            "Moderator",
+                //            "Member"
+                //        }}
+                //    };
+            }
+        }
+        public class CustomRole
+        {
+            public int Id { get; set; }
+            public string ProjectName { get; set; }
+            public List<string> Role { get; set; }
+        }
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register(RegisterModel model)

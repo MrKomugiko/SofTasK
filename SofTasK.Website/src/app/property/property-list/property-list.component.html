@@ -1,5 +1,5 @@
 <div class="row deck-group m-2">
   <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-3" *ngFor="let item of projects">
-    <app-property-card [project]="item" class="card shadow h-100"> </app-property-card>
+    <app-property-card style="border:solid; border-width: 2px; border-color: transparent;" [style.border-color]="getBorderColor(item.id)"  [project]="item" class="card shadow h-100"> </app-property-card>
   </div>
 </div>

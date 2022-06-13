@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginComponent } from '../login/login.component';
-import { IRegisterRequest, SoftaskAPI } from '../services/softaskapi.service';
+import { AuthService, IRegisterRequest } from '../services/auth-service.service';
 
 @Component({
   selector: 'app-register',
@@ -18,7 +17,7 @@ export class RegisterComponent implements OnInit {
     confirmpassword: ['', Validators.required]
   })
 
-  constructor(private formbuilder:FormBuilder, private router:Router, private softaskAPI:SoftaskAPI) {
+  constructor(private formbuilder:FormBuilder, private router:Router, private authService:AuthService) {
 
   }
 
@@ -34,7 +33,7 @@ export class RegisterComponent implements OnInit {
       confirmpassword: this.registerForm.controls["confirmpassword"].value
     }
 
-    this.softaskAPI.register(payload).subscribe({
+    this.authService.register(payload).subscribe({
       next:(respond) => {
           console.log("Register respond:"+respond);
           this.router.navigate(["/login"]);

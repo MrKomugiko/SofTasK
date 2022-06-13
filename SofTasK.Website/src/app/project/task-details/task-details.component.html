@@ -1,7 +1,8 @@
 <div *ngIf="task != undefined" style="width: 0px" [@inOutAnimation]="hide ? 'closed' : 'open'">
   <div class="task-container shadow">
     <div class="task-content">
-      <div class="d-flex" style="margin-top: 1rem; margin-bottom: 0.5rem; margin-right: 1rem">
+      <!-- MEMBER section -->
+      <div *ngIf="member" class="d-flex" style="margin-top: 1rem; margin-bottom: 0.5rem; margin-right: 1rem">
         <button class="btn btn-sm btn-outline-success">
           Mark as completed
         </button>
@@ -11,6 +12,7 @@
         </button>
       </div>
       <hr />
+
       <div class="container-details">
         <div class="taskTitle"> #{{task?.id}} {{task?.title}}</div>
         <hr />
@@ -26,7 +28,7 @@
               <td class="tableLabel">Assigned:</td>
               <td>
                 <div class="row">
-                  <div class="col-auto">
+                  <div class="col-auto" *ngIf="member">
                     <input type="button" class="btn btn-primary btn-sm" value="Join" />
                   </div>
                   <div *ngIf="task?.assigned == undefined; else assignedUser" class="col-8" style=" white-space: nowrap; overflow: hidden; text-overflow: ellipsis; " >

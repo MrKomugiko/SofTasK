@@ -1,48 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { AuthService } from './auth-service.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
 
-
 export class SoftaskAPI {
-
-
  private baseUrl:string;
 
-  private currentUserSource= new Subject<string>();
-
-  currentUser$ = this.currentUserSource.asObservable();
-  loggedUserdata:ILoginResponse|null = null
-
-
-  updateLoggedUser(username:string)
-  {
-    console.log('next '+ username);
-    this.currentUserSource.next(username);
-  }
-
-
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private auth:AuthService) {
      //private baseUrl: string = '';
     if (environment.production) {
       // for production
       this.baseUrl = 'https://softask-api.herokuapp.com/api/';
-      console.log(this.baseUrl);
+      // console.log(this.baseUrl);
     } else {
       // for development
       this.baseUrl = 'https://localhost:7054/api/';
-      console.log(this.baseUrl);
+      // console.log(this.baseUrl);
     }
   }
 
   public AddTaskPOST(payload:any) : Observable<ITask>
   {
-    const token = this.getUserToken();
+    const token = this.auth.getUserToken();
 
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
@@ -54,9 +39,8 @@ export class SoftaskAPI {
 
     return new Observable<ITask>();
   }
-
   public getAllProjects(): Observable<IProject[]> {
-    const token = this.getUserToken();
+    const token = this.auth.getUserToken();
 
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
@@ -68,23 +52,8 @@ export class SoftaskAPI {
 
     return new Observable<IProject[]>();
   }
-
-
-  public getUserToken(): string | null {
-    let token = null;
-
-    const obj = localStorage.getItem("userInfo");
-    if (obj != null) {
-      const userInfo: ILoginResponse = JSON.parse(obj);
-      token = userInfo.token;
-    }
-
-    return token;
-  }
-
-
   public getAllTasksByProject(projectId: number): Observable<ITask[]> {
-    const token = this.getUserToken();
+    const token = this.auth.getUserToken();
 
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
@@ -97,10 +66,9 @@ export class SoftaskAPI {
     return new Observable<ITask[]>();
 
   }
-
   public RemoveTask(id:number)
   {
-    const token = this.getUserToken();
+    const token = this.auth.getUserToken();
 
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
@@ -112,38 +80,10 @@ export class SoftaskAPI {
     else
       throw new Observable<Object>();
   }
-
-
-  public login(data: ILoginRequest): Observable<ILoginResponse> {
-    return this.http.post<ILoginResponse>(this.baseUrl + 'Authenticate/login', data);
-  }
-
-  public logout(): void {
-    localStorage.removeItem("userInfo");
-    console.log("user logged off");
-  }
-
-  public register(data: IRegisterRequest) {
-    return this.http.post(this.baseUrl + 'Authenticate/register', data);
-  }
 }
 
 
-export interface IRegisterRequest {
-  email: string,
-  username: string,
-  password: string,
-  confirmpassword: string
-}
-export interface ILoginResponse {
-  user: string,
-  token: string,
-  expiration: Date
-}
-export interface ILoginRequest {
-  username: string,
-  password: string
-}
+
 export interface IProject {
   id: number,
   name: string,
@@ -157,7 +97,6 @@ export interface IUser {
   userName: string,
   email: string
 }
-
 export interface ITask {
   id: number,
   projectId: number,
@@ -172,7 +111,6 @@ export interface ITask {
   assigned: IUser | null,
   tags: string[]
 }
-
 export interface ITaskCreateRequest {
   projectId: number,
   title: string,
@@ -182,10 +120,6 @@ export interface ITaskCreateRequest {
   ownerId: string,
   tags: string[]
 }
-
-
-
-
 export enum priorityLevels {
   notSelected,
   Low,
@@ -194,7 +128,6 @@ export enum priorityLevels {
   Major,
   Critical
 }
-
 export enum taskStatuses {
   notSelected,
   New,
@@ -205,3 +138,4 @@ export enum taskStatuses {
   Delayed,
   Abaddoned
 }
+
