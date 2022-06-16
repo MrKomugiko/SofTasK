@@ -44,6 +44,9 @@ export class PropertyListComponent implements OnInit {
     if(userroles[isInProject].Role.some(x=>x == "Owner") )
       return "yellowgreen";
 
-    return "blue";
+    if(userroles[isInProject].Role.some(x=>x == "Member") )
+      return "blue";
+
+    return "black";
   }
 }

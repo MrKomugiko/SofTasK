@@ -6,7 +6,10 @@ using SofTasK.API.Data;
 using SofTasK.API.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Linq;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -34,7 +37,7 @@ namespace SofTasK.API.Controllers
             var user = await userManager.FindByNameAsync(model.Username);
             if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
             {
-                var userRoles = await userManager.GetRolesAsync(user);
+                //var userRoles = await userManager.GetRolesAsync(user);
 
                 var authClaims = new List<Claim>
                 {
@@ -42,10 +45,10 @@ namespace SofTasK.API.Controllers
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
-                foreach (var userRole in userRoles)
-                {
-                    authClaims.Add(new Claim(ClaimTypes.Role, userRole));
-                }
+                //foreach (var userRole in userRoles)
+                //{
+                //    authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+                //}
 
                 var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
                 List<CustomRole> ownedprojects = GetRoles(_context,user);
@@ -72,40 +75,45 @@ namespace SofTasK.API.Controllers
             static List<CustomRole> GetRoles(ApplicationDbContext _context, AppUser _user)
             {
                 var roles = new List<CustomRole>();
+                var membershipRoles = new List<CustomRole>();
 
-                roles = _context.Projects.Where(x=>x.OwnerId == _user.Id)
-                    .Select(x=> new CustomRole {
-                        Id = x.Id,
-                        ProjectName = x.Name,
-                        Role = new List<string>()
+
+                // populate ownership
+                Expression<Func<Project, bool>> userIsAOwnerOrMember = x => x.OwnerId == _user.Id ||  x.Collaborators.Any(x => x.UserId == _user.Id);
+                roles = _context.Projects
+                    .Where(userIsAOwnerOrMember)
+                    .Include(x=>x.Collaborators)
+                    .Select(x => new CustomRole
                         {
-                            "Owner"
-                        }
-                    }).ToList();
+                            Id = x.Id,
+                            ProjectName = x.Name,
+                            Role = GetRoleString(x, _user.Id)
+                        
+                        })
+                    .AsNoTracking()
+                    .ToList();
 
                 return roles;
-                //return new List<object>(){
-                //    new {
-                //        Id = 1,
-                //        ProjectName = "project1",
-                //        Role = new List<string>()
-                //        {
-                //            "Owner",
-                //        }
-                //    },
-
-                //    new {
-                //        Id = 2,
-                //        ProjectName = "project2",
-                //        Role = new List<string>()
-                //        {
-                //            "Admin",
-                //            "Moderator",
-                //            "Member"
-                //        }}
-                //    };
             }
         }
+
+        private static List<string> GetRoleString(Project x, string _userId)
+        {
+            var roleslist = new List<string>();
+            if(x.OwnerId == _userId)
+            {
+                roleslist.Add("Owner");
+            }
+            Collaboration? colabuser = x.Collaborators.SingleOrDefault(x => x.UserId == _userId);
+            if(colabuser != null)
+            {
+                if(colabuser.Confirmed == true)
+                    roleslist.Add("Member");
+            }
+
+            return roleslist;
+        }
+
         public class CustomRole
         {
             public int Id { get; set; }

@@ -17,8 +17,31 @@ namespace SofTasK.API.Repositories
         {
             return await _context.Tasks
                 .Where(x => x.ProjectId == projectId)
-                .Include(x=>x.Assigned)
-                .Include(x => x.Createdby)
+                .Select(x=> new TaskModel
+                {
+                    Id = x.Id,
+                    Description = x.Description,
+                    ProjectId = x.ProjectId,
+                    OwnerId = x.OwnerId,
+                    AssignedId = x.AssignedId,
+                    Assigned = new AppUser {
+                        Id = x.Assigned.Id,
+                        UserName = x.Assigned.UserName,
+                        Email = x.Assigned.Email
+                    },
+                    Createdby =  new AppUser {
+                        Id = x.Createdby.Id,
+                        UserName = x.Createdby.UserName,
+                        Email = x.Createdby.Email
+                    },
+                    Created = x.Created,
+                    Started = x.Started,
+                    Ended = x.Ended,
+                    Status = x.Status,
+                    Priority = x.Priority,
+                    Tags = x.Tags,
+                    Title = x.Title
+                })
                 .AsNoTracking().ToListAsync();
         }
 
@@ -28,11 +51,46 @@ namespace SofTasK.API.Repositories
             {
                 return null;
             }
-            TaskModel? task = await _context.Tasks
-                .Include(x => x.Assigned)
-                .Include(x => x.Createdby)
-                .AsNoTracking()
-                .SingleOrDefaultAsync(x => x.Id == _id);
+
+            // with select only necessary columns
+            TaskModel? task  = await _context.Tasks
+            .Select(x => new TaskModel
+            {
+                Id = x.Id,
+                Description = x.Description,
+                ProjectId = x.ProjectId,
+                OwnerId = x.OwnerId,
+                AssignedId = x.AssignedId,
+                Assigned = new AppUser
+                {
+                    Id = x.Assigned.Id,
+                    UserName = x.Assigned.UserName,
+                    Email = x.Assigned.Email
+                },
+                Createdby = new AppUser
+                {
+                    Id = x.Createdby.Id,
+                    UserName = x.Createdby.UserName,
+                    Email = x.Createdby.Email
+                },  
+                Created = x.Created,
+                Started = x.Started,
+                Ended = x.Ended,
+                Status = x.Status,
+                Priority = x.Priority,
+                Tags = x.Tags,
+                Title = x.Title
+            })
+            .AsNoTracking()
+            .SingleOrDefaultAsync(x => x.Id == _id);
+
+
+            //// with includes while user table
+            //TaskModel? task = await _context.Tasks
+            //    .Include(x => x.Assigned)
+            //    .Include(x => x.Createdby)
+            //    .AsNoTracking()
+            //    .SingleOrDefaultAsync(x => x.Id == _id);
 
             return task;
         }

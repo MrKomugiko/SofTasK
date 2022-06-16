@@ -16,7 +16,8 @@ export class ProjectService {
   currentProjectInfo$ = this.currentProjectSource.asObservable();
 
   updateProjectInfo(projectId: number, memberType: MemberType, data:IProject) {
-    // console.log('next ' + username);
+    console.log('updateProjectInfo membertype' + memberType);
+    console.log(data);
     this.currentProjectSource.next(new ProjectData(projectId,memberType,data));
   }
   clearProjectInfo() {
@@ -44,7 +45,9 @@ export class ProjectData
     this.memberType = _memberType;
     this.data = _data;
 
-    console.log("PRoject data created:"+_id);
+    console.log("PRoject data created id:"+_id);
+    console.log("PRoject data created mambertype:"+_memberType);
+
   }
 
   // methods like can get access to.. etc.

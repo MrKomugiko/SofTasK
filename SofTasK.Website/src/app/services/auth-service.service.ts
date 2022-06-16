@@ -54,15 +54,24 @@ export class AuthService {
     const rolestring = token.split(".")[1];
     const data = atob(rolestring);
     localStorage.setItem("userRoles", JSON.parse(data)["privileges"]);
-    // console.log('user roles ' + localStorage.getItem("userRoles"));
+    console.log("registered privileges: ");
+    console.log(JSON.parse(JSON.parse(data)["privileges"]));
   }
+
+  UserRolesArray:IRoles[] = [];
+
   GetUserRolesData(): IRoles[] {
-    let data = localStorage.getItem("userRoles");
-    if (data != null) {
-      return JSON.parse(data);
+    if(this.UserRolesArray.length == 0)
+    {
+      //cache from localstorage
+      console.log("GetUserRolesData: ");
+      let data = localStorage.getItem("userRoles");
+      if (data != null) {
+        this.UserRolesArray = JSON.parse(data);
+      }
     }
 
-    return [];
+    return this.UserRolesArray;
   }
   getUserToken(): string | null {
     let token = null;
@@ -81,6 +90,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem("userInfo");
     console.log("user logged off");
+    this.UserRolesArray = [];
   }
   register(data: IRegisterRequest) {
     return this.http.post(this.baseUrl + 'Authenticate/register', data);

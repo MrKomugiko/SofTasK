@@ -70,15 +70,11 @@ export class ProjectComponent implements OnInit {
       next: (data: ITask[]) => {
 
           this.tasks = data;
-          console.log(data)
+          // console.log('getAllTasksByProject: ');
+          // console.log(data);
           this.storeProjectInfo();
 
-          let userType:MemberType;
-          if(this.isProjectOwner) userType= MemberType.Owner;
-          else if(this.isAMember) userType= MemberType.Member;
-          else userType= MemberType.Anonymous;
-
-          this.projectService.updateProjectInfo(this.projectId, userType, this.currentProject)
+          this.projectService.updateProjectInfo(this.projectId, this.UserRoleInProject(), this.currentProject)
       },
       error: (err: HttpErrorResponse) => {
         console.log(`[ error: ${err.status}] error: ${err.error} message: ${err.message}`);
@@ -86,17 +82,18 @@ export class ProjectComponent implements OnInit {
         return;
       }
     });
-
-    let data = this.authService.GetUserRolesData();
-    if(data.length >0)
-    {
-      data.some((element) => {
-        if (element.Id === this.projectId) {
-          this.isProjectOwner = true;
-          this.isAMember = true;
-      }
-    })
   }
+
+  private UserRoleInProject():MemberType {
+    let userroles = this.authService.GetUserRolesData().filter(x => x.Id == this.projectId)[0].Role;
+    let userType: MemberType = MemberType.Anonymous; // default
+    if (userroles.includes(MemberType[MemberType.Owner]))
+      userType = MemberType.Owner;
+    if (userroles.includes(MemberType[MemberType.Member]))
+      userType = MemberType.Member;
+
+    // console.log('userType in this project = '+userType);
+    return userType;
   }
 
   openNewTaskModal() {

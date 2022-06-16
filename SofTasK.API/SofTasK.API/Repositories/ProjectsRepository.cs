@@ -24,6 +24,8 @@ namespace SofTasK.API.Repositories
             return await _context.Projects
                 .Include(x => x.Owner)
                 .Include(x => x.AllTasks)
+                .Include(x => x.Collaborators.Where(c=>c.Confirmed == true))
+                    .ThenInclude(x => x.AppUser)
                 .ToListAsync();
         }
 
@@ -36,6 +38,8 @@ namespace SofTasK.API.Repositories
             Project? project = await _context.Projects
                 .Include(x => x.AllTasks)
                 .Include(x => x.Owner)
+                .Include(x => x.Collaborators.Where(c => c.Confirmed == true))
+                    .ThenInclude(x=>x.AppUser)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(x => x.Id == _id);
 
