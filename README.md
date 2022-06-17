@@ -67,4 +67,7 @@ of the Postgress database by the Heroku host and the need to manually refresh th
 ![details](screens/project-details.png)
 ![task_details](screens/task-details.png)
 ![add_task](screens/task-add.png)
+![memberView](screens/member-view.png)
+![ownerView](screens/owner-view.png)
+
 
