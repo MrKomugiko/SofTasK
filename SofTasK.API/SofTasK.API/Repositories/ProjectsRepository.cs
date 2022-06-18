@@ -13,7 +13,7 @@ namespace SofTasK.API.Repositories
         {
             _context = context;
         }
-       
+
         public async Task<IEnumerable<Project>> GetListAsync()
         {
             if (_context.Projects == null)
@@ -24,9 +24,58 @@ namespace SofTasK.API.Repositories
             return await _context.Projects
                 .Include(x => x.Owner)
                 .Include(x => x.AllTasks)
-                .Include(x => x.Collaborators.Where(c=>c.Confirmed == true))
+                .Include(x => x.Collaborators)
                     .ThenInclude(x => x.AppUser)
+                .AsSplitQuery()
                 .ToListAsync();
+
+            //return await _context.Projects.Select(x => new Project()
+            //{
+            //    Id = x.Id,
+            //    Name = x.Name,
+            //    Description = x.Description,
+            //    OwnerId = x.OwnerId,
+            //    Owner = x.Owner != null ? new AppUser()
+            //    {
+            //        Id = x.Owner.Id,
+            //        UserName = x.Owner.UserName,
+            //        Email = x.Owner.Email
+            //    } : null,
+            //    AllTasks = x.AllTasks.Select(x => new TaskModel()
+            //    {
+            //        Id = x.Id,
+            //        ProjectId = x.ProjectId,
+            //        Title = x.Title,
+            //        Priority = x.Priority,
+            //        Created = x.Created,
+            //        Started = x.Started,
+            //        Ended = x.Ended,
+            //        Createdby = x.Createdby != null ? new AppUser()
+            //        {
+            //            Id = x.Createdby.Id,
+            //            UserName = x.Createdby.UserName,
+            //            Email = x.Createdby.Email
+            //        } : null,
+            //        Assigned = x.Assigned != null ? new AppUser()
+            //        {
+            //            Id = x.Assigned.Id,
+            //            UserName = x.Assigned.UserName,
+            //            Email = x.Assigned.Email
+            //        } : null
+            //    }).ToList(),
+            //    Collaborators = x.Collaborators.Select(x => new Collaboration()
+            //    {
+            //        AppUser = new AppUser()
+            //        {
+            //            Id = x.AppUser.Id,
+            //            UserName = x.AppUser.UserName,
+            //            Email = x.AppUser.Email
+            //        }
+            //    }).ToList()
+            //})
+            //.AsSplitQuery()
+            //.AsNoTracking()
+            //.ToListAsync();
         }
 
         public async Task<Project?> GetSingleOrDefaultAsync(int _id)
@@ -38,7 +87,7 @@ namespace SofTasK.API.Repositories
             Project? project = await _context.Projects
                 .Include(x => x.AllTasks)
                 .Include(x => x.Owner)
-                .Include(x => x.Collaborators.Where(c => c.Confirmed == true))
+                .Include(x => x.Collaborators)
                     .ThenInclude(x=>x.AppUser)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(x => x.Id == _id);

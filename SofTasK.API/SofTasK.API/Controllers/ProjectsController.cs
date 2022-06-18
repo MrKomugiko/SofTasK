@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SofTasK.API.Data;
+using SofTasK.API.Enums;
 using SofTasK.API.Extensions;
 using SofTasK.API.Interfaces;
 using SofTasK.API.Models;
@@ -28,14 +29,17 @@ namespace SofTasK.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProjectDto>>> GetProjectsAsync()
         {
+            var user = User.Identities;
+
             IEnumerable<Project> projects = await _projectsRepository.GetListAsync();
             if (!projects.Any()) return new List<ProjectDto>();
-                
-            return projects.Select(x=>x.AsDto()).ToList();
+
+            return projects.Select(x => x.AsDto()).ToList();
         }
 
         // GET: api/Projects/5
         [HttpGet("{_id}")]
+        [AuthorizeByProjectRole(ProjectRoles.Owner)]
         public async Task<ActionResult<ProjectDto>> GetProjectAsync(int _id)
         {
             Project? project = await _projectsRepository.GetSingleOrDefaultAsync(_id);
@@ -55,8 +59,8 @@ namespace SofTasK.API.Controllers
                 return BadRequest(error: new { Message = "Updating Projet id do not match with existing project." });
             }
 
-            var respond = await _projectsRepository.UpdateAsync(_id, new Project { 
-                Name=_changedProject.Name, 
+            var respond = await _projectsRepository.UpdateAsync(_id, new Project {
+                Name = _changedProject.Name,
                 Description = _changedProject.Description }
             );
 
@@ -91,7 +95,7 @@ namespace SofTasK.API.Controllers
             if (result.IsSuccessed && result.project != null)
                 return CreatedAtAction("GetProjects", new { id = result.project.Id }, result.project.AsDto());
             else
-                return BadRequest(error:result.Message);
+                return BadRequest(error: result.Message);
 
         }
 

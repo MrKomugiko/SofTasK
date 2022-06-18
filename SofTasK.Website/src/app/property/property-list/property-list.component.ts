@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectService } from 'src/app/project/project-service.service';
-import { AuthService } from 'src/app/services/auth-service.service';
+import { ProjectService } from 'src/app/services/project-service.service';
+import { AuthService, IRoles } from 'src/app/services/auth-service.service';
 import { IProject, SoftaskAPI } from 'src/app/services/softask-api.service';
 
 @Component({
@@ -10,14 +10,19 @@ import { IProject, SoftaskAPI } from 'src/app/services/softask-api.service';
 })
 export class PropertyListComponent implements OnInit {
 
-  constructor(private softaskAPI: SoftaskAPI,private authService:AuthService,private projectService:ProjectService) {}
+  constructor(private softaskAPI: SoftaskAPI,private authService:AuthService,private projectService:ProjectService) {
+    this.roles = this.authService.GetUserRolesData();
+  }
 
   projects:Array<IProject> = [];
+  roles:IRoles[];
+  isAMember:boolean = false;
 
   ngOnInit(): void {
+
     console.log('init property-list')
     /* hide sidebar project related info when list of projects is displaying*/
-    this.projectService.clearProjectInfo();
+
 
     this.softaskAPI.getAllProjects()
       .subscribe(data => {
@@ -27,24 +32,34 @@ export class PropertyListComponent implements OnInit {
         }
         this.projects = data;
       })
-  }
+
+      this.roles = this.authService.UserRolesArray;
+    }
+
+    checkMembership(project:IProject)
+    {
+      // console.log(project);
+      // console.log(this.roles);
+      if(this.roles.some(x=>x.Id == project.id))
+        return true;
+
+      return false;
+    }
 
   getBorderColor(projectId:number):string {
     // user is a owner = bright green
     // user is a member = blue
     // user is not a member and project is public - transparent
     // project is private = red
-
-    let userroles = this.authService.GetUserRolesData();
     // member or owner
-    let isInProject = userroles.findIndex(x=>x.Id == projectId);
+    let isInProject = this.roles.findIndex(x=>x.Id == projectId);
     if(isInProject == -1)
       return 'transparent';
 
-    if(userroles[isInProject].Role.some(x=>x == "Owner") )
+    if(this.roles[isInProject].Role.some(x=>x == "Owner") )
       return "yellowgreen";
 
-    if(userroles[isInProject].Role.some(x=>x == "Member") )
+    if(this.roles[isInProject].Role.some(x=>x == "Member") )
       return "blue";
 
     return "black";

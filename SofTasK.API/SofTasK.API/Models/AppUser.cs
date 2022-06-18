@@ -12,5 +12,9 @@ namespace SofTasK.API.Models
 
         [InverseProperty("Createdby")]
         public ICollection<TaskModel> CreatedTasks { get; set; }
+        
+        public ICollection<Collaboration> Collaborations { get; set; }
+        
+        public ICollection<JoinRequest> JoinRequests { get; set; }
     }
 }

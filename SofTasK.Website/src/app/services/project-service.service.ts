@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { IProject } from '../services/softask-api.service';
+import { IProject } from './softask-api.service';
 
 @Injectable({
   providedIn: 'root'

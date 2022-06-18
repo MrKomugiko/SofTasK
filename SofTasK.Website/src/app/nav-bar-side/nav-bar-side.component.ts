@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { MemberType, ProjectData, ProjectService } from '../project/project-service.service';
+import { MemberType, ProjectData, ProjectService } from '../services/project-service.service';
 
 @Component({
   selector: 'app-nav-bar-side',
@@ -14,7 +14,7 @@ export class NavBarSideComponent implements OnInit {
   subscription:Subscription;
   curentProjectInfo:ProjectData | null = null;
 
-  constructor(private projectService:ProjectService) {
+  constructor(private projectService:ProjectService,private cdref: ChangeDetectorRef) {
     this.subscription = projectService.currentProjectInfo$.subscribe (
       data => {
         // console.log('get subscribed data: ');
@@ -33,6 +33,7 @@ export class NavBarSideComponent implements OnInit {
         }
       )
    }
+ 
 
   ngOnInit(): void {
 

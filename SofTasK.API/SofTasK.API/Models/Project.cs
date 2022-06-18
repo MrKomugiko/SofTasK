@@ -14,9 +14,10 @@ namespace SofTasK.API.Models
         public string OwnerId { get; init; }
         [ForeignKey("OwnerId")]
         public AppUser? Owner { get; init; }
-        public List<Collaboration?>? Collaborators { get; set; } = new List<Collaboration?>();
 
         public List<TaskModel> AllTasks { get; set; } = new List<TaskModel>();
-    }
 
+        public List<Collaboration> Collaborators { get; set; } = new List<Collaboration>();
+        public List<JoinRequest> JoinRequests { get; set; } = new List<JoinRequest>();
+    }
 }

@@ -1,18 +1,26 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
 import { IProject } from "src/app/services/softask-api.service";
 
 @Component({
   selector: 'app-property-card',
   //template: '<h1> I am a card</h1>'
   templateUrl: 'property-card.component.html',
-  styleUrls: ['property-card.component.css']
+  styleUrls: ['property-card.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class PropertyCardComponent implements OnInit{
-  constructor(){}
-  @Input() project!:IProject;
+export class PropertyCardComponent implements OnInit {
+  constructor(){  }
 
   ngOnInit(): void {
-      // console.log(this.project);
+
+  }
+
+  @Input() project!:IProject;
+  @Input() isAMember!:boolean;
+
+  JoinToProject()
+  {
+    alert('join request sended');
   }
 }

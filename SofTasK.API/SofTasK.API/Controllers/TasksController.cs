@@ -55,42 +55,6 @@ namespace SofTasK.API.Controllers
             return task.AsDto();
         }
 
-        //// GET: api/Projects/5
-        //[Authorize]
-        //[HttpGet("{_id}")]
-        //public async Task<ActionResult<TaskDto>> GetTaskAsync(int _id)
-        //{
-        //    Project? project = await _projectsRepository.GetSingleOrDefaultAsync(_id);
-
-        //    if (project == null)
-        //        return NotFound();
-
-        //    return project.AsDto();
-        //}
-
-        //// PUT: api/Projects/5
-        //[Authorize]
-        //[HttpPut("{_id}")]
-        //public async Task<IActionResult> PutProjectAsync(int _id, ProjectEditDto _changedProject)
-        //{
-        //    if (_id != _changedProject.Id)
-        //    {
-        //        return BadRequest(error: new { Message = "Updating Projet id do not match with existing project." });
-        //    }
-
-        //    var respond = await _projectsRepository.UpdateAsync(_id, new Project
-        //    {
-        //        Name = _changedProject.Name,
-        //        Description = _changedProject.Description
-        //    }
-        //    );
-
-        //    if (respond.ISuccessed)
-        //        return NoContent();
-        //    else
-        //        return BadRequest(error: respond.Message);
-        //}
-
         // POST: api/Tasks
         [HttpPost]
         public async Task<ActionResult<TaskDto>> PostTaskAsync(CreateTaskDto _newTask)

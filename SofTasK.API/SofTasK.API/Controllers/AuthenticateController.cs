@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using SofTasK.API.ModelDtos;
+using SofTasK.API.Enums;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,7 +19,7 @@ namespace SofTasK.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthenticateController : ControllerBase
+    public partial class AuthenticateController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<AppUser> userManager;
@@ -84,12 +86,11 @@ namespace SofTasK.API.Controllers
                     .Where(userIsAOwnerOrMember)
                     .Include(x=>x.Collaborators)
                     .Select(x => new CustomRole
-                        {
-                            Id = x.Id,
-                            ProjectName = x.Name,
-                            Role = GetRoleString(x, _user.Id)
-                        
-                        })
+                    {
+                        Id = x.Id,
+                        ProjectName = x.Name,
+                        Role = GetRoleString(x, _user.Id)
+                    })
                     .AsNoTracking()
                     .ToList();
 
@@ -97,28 +98,20 @@ namespace SofTasK.API.Controllers
             }
         }
 
-        private static List<string> GetRoleString(Project x, string _userId)
+        private static List<ProjectRoles> GetRoleString(Project x, string _userId)
         {
-            var roleslist = new List<string>();
+            var roleslist = new List<ProjectRoles>();
             if(x.OwnerId == _userId)
             {
-                roleslist.Add("Owner");
+                roleslist.Add(ProjectRoles.Owner);
             }
             Collaboration? colabuser = x.Collaborators.SingleOrDefault(x => x.UserId == _userId);
             if(colabuser != null)
             {
-                if(colabuser.Confirmed == true)
-                    roleslist.Add("Member");
+                roleslist.Add(ProjectRoles.Member);
             }
 
             return roleslist;
-        }
-
-        public class CustomRole
-        {
-            public int Id { get; set; }
-            public string ProjectName { get; set; }
-            public List<string> Role { get; set; }
         }
         [HttpPost]
         [Route("register")]

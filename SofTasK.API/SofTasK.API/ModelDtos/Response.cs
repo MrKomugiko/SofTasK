@@ -1,4 +1,4 @@
-﻿namespace SofTasK.API.Models
+﻿namespace SofTasK.API.ModelDtos
 {
     public class Response
     {

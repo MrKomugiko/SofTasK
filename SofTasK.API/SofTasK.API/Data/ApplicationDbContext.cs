@@ -15,6 +15,6 @@ namespace SofTasK.API.Data
         public DbSet<Project> Projects { get; set; }
         public DbSet<TaskModel> Tasks { get; set; }
         public DbSet<Collaboration> Collaborations { get; set; }
-
+        public DbSet<JoinRequest> JoinRequests { get; set; }
     }
 }   

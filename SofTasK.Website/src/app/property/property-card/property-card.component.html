@@ -5,6 +5,6 @@
     <p class="card-text">{{project.description}}</p>
     <div class="input-group justify-content-between mt-auto">
       <a [routerLink]="['/project', project.id ]" [state]="project" class="btn btn-sm btn-primary card-link">Details</a>
-      <a href="#" class="btn btn-sm btn-outline-primary card-link ml-auto">Collaborate</a>
+      <a [hidden]="isAMember" (click)="JoinToProject()" class="btn btn-sm btn-outline-primary card-link ml-auto">Join</a>
     </div>
   </div>

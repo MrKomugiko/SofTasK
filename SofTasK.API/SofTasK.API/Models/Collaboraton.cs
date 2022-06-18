@@ -7,16 +7,16 @@ namespace SofTasK.API.Models
     {
         [Key] public int Id { get; set; }
 
-        public string? UserId { get; set; }
+        [Required] public string UserId { get; set; }
         [ForeignKey("UserId")]
-        public AppUser? AppUser { get; set; }
+        public AppUser AppUser { get; set; }
 
-        public int? ProjectId { get; set; }
+        [Required] public int ProjectId { get; set; }
         [ForeignKey("ProjectId")]
-        public Project? Project { get; set; }
+        public Project Project { get; set; }
 
-        public DateTime RequestDate { get; set; } = DateTime.UtcNow;
-        public DateTime? RespondDate { get; set; } = null;
-        public bool? Confirmed { get; set; }
+        //public DateTime RequestDate { get; set; } = DateTime.UtcNow;
+        //public DateTime? RespondDate { get; set; } = null;
+        //public bool? Confirmed { get; set; }
     }
 }

@@ -1,14 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IProject, ITask, priorityLevels, SoftaskAPI, taskStatuses } from '../services/softask-api.service';
 import { TaskDetailsComponent } from './task-details/task-details.component';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { NewTaskModalComponent } from './new-task-modal/new-task-modal.component';
-import { Observable, pipe, take } from 'rxjs';
-import { isNull } from '@angular/compiler/src/output/output_ast';
 import { AuthService } from '../services/auth-service.service';
-import { MemberType, ProjectService } from './project-service.service';
+import { MemberType, ProjectService } from '../services/project-service.service';
 
 @Component({
   selector: 'app-project',
@@ -23,7 +21,6 @@ export class ProjectComponent implements OnInit {
     private softaskAPI: SoftaskAPI,
     private authService:AuthService,
     private projectService:ProjectService) {
-
   }
 
   private storeProjectInfo() //
@@ -45,6 +42,7 @@ export class ProjectComponent implements OnInit {
       // console.log("NOT FOUND DATA IN localStorage BY: \"project" + this.projectId + "\"");
     }
   }
+
   isProjectOwner:boolean = false;
   isAMember:boolean=false;
 
@@ -75,6 +73,8 @@ export class ProjectComponent implements OnInit {
           this.storeProjectInfo();
 
           this.projectService.updateProjectInfo(this.projectId, this.UserRoleInProject(), this.currentProject)
+          this.isProjectOwner = this.UserRoleInProject()==MemberType.Owner;
+          this.isAMember = this.UserRoleInProject()==MemberType.Owner ||this.UserRoleInProject()==MemberType.Member ;
       },
       error: (err: HttpErrorResponse) => {
         console.log(`[ error: ${err.status}] error: ${err.error} message: ${err.message}`);
@@ -82,6 +82,15 @@ export class ProjectComponent implements OnInit {
         return;
       }
     });
+  }
+
+  ngOnDestroy(){
+    console.log('on destroy hide dedicated info from sidebar')
+    this.projectService.clearProjectInfo();
+  }
+
+  GetCurrentRoleString():string {
+    return MemberType[this.UserRoleInProject()];
   }
 
   private UserRoleInProject():MemberType {

@@ -82,8 +82,6 @@ export class SoftaskAPI {
   }
 }
 
-
-
 export interface IProject {
   id: number,
   name: string,

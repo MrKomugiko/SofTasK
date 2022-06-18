@@ -1,4 +1,4 @@
-<h1 *ngIf="isProjectOwner"> HELLO BOSS !</h1>
+<h2 *ngIf="isAMember"> your role in this project: {{GetCurrentRoleString()}}</h2>
 <h1 class="text-center shadow">Project #{{projectId}} Dashboard</h1>
 <!-- MEMBER USERS SECTION -->
 <div *ngIf="isAMember" >
