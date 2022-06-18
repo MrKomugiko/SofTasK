@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
+import { MemberType } from './project-service.service';
 import { SoftaskAPI } from './softask-api.service';
 
 @Injectable({
@@ -127,5 +128,7 @@ export interface ILoginRequest {
 export interface IRoles {
   Id: number,
   ProjectName: string,
-  Role: string[]
+  Role: MemberType[]
 }
+
+

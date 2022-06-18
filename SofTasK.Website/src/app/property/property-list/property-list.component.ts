@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectService } from 'src/app/services/project-service.service';
+import { MemberType, ProjectService } from 'src/app/services/project-service.service';
 import { AuthService, IRoles } from 'src/app/services/auth-service.service';
 import { IProject, SoftaskAPI } from 'src/app/services/softask-api.service';
 
@@ -56,10 +56,10 @@ export class PropertyListComponent implements OnInit {
     if(isInProject == -1)
       return 'transparent';
 
-    if(this.roles[isInProject].Role.some(x=>x == "Owner") )
+    if(this.roles[isInProject].Role.some(x=>x == MemberType.Owner) )
       return "yellowgreen";
 
-    if(this.roles[isInProject].Role.some(x=>x == "Member") )
+    if(this.roles[isInProject].Role.some(x=>x == MemberType.Member) )
       return "blue";
 
     return "black";

@@ -94,11 +94,16 @@ export class ProjectComponent implements OnInit {
   }
 
   private UserRoleInProject():MemberType {
-    let userroles = this.authService.GetUserRolesData().filter(x => x.Id == this.projectId)[0].Role;
     let userType: MemberType = MemberType.Anonymous; // default
-    if (userroles.includes(MemberType[MemberType.Owner]))
+
+    let userrolesdata = this.authService.GetUserRolesData().filter(x => x.Id == this.projectId);
+    if(userrolesdata.length == 0 )
+      return userType;
+
+      let userroles = userrolesdata[0]?.Role;
+    if (userroles.includes(MemberType.Owner))
       userType = MemberType.Owner;
-    if (userroles.includes(MemberType[MemberType.Member]))
+    if (userroles.includes(MemberType.Member))
       userType = MemberType.Member;
 
     // console.log('userType in this project = '+userType);
